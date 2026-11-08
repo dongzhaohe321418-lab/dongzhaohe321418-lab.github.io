@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zhaohe (Eric) Dong</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Zhaohe (Eric) Dong: machine learning for materials science, and audit machinery that makes AI-written science checkable.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<style>
+/* Layout: a research record. Sticky index bar, hero = name + live instrument, then numbered sections (§) like a paper; every claim carries its number. */
+:root{
+  --paper:#F1F2EE; --paper-2:#E8EAE4; --ink:#14171C; --muted:#5A626C; --rule:#D2D5CE;
+  --accent:#2340C4; --hi:#E5B30F; --pass:#1D7A4B; --warn:#B4541B;
+  --display:"Bricolage Grotesque","PingFang SC","Hiragino Sans GB","Noto Sans SC",system-ui,sans-serif;
+  --serif:"Newsreader","Songti SC","Noto Serif SC",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  --accent-soft:color-mix(in oklab,var(--accent) 12%,transparent);
+  --hi-soft:color-mix(in oklab,var(--hi) 34%,transparent);
+  --wrap:1140px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E1114; --paper-2:#161A1F; --ink:#E6E8E3; --muted:#959DA7; --rule:#2A3037;
+  --accent:#93A6FF; --hi:#F1C94A; --pass:#5DC28D; --warn:#E9925A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0E1114; --paper-2:#161A1F; --ink:#E6E8E3; --muted:#959DA7; --rule:#2A3037;
+  --accent:#93A6FF; --hi:#F1C94A; --pass:#5DC28D; --warn:#E9925A; color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font:400 18px/1.6 var(--serif);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+sub{font-size:.7em;line-height:0}
+a{color:inherit;text-decoration-color:color-mix(in oklab,currentColor 35%,transparent);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--mono);font-size:12.5px;letter-spacing:.02em}
+.label{font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;font-weight:600}
+p{margin:0}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in oklab,var(--paper) 86%,transparent);
+  backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
+.bar.scrolled{border-bottom-color:var(--rule)}
+.bar .wrap{display:flex;align-items:center;gap:24px;height:58px}
+.mark{font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:-.02em;text-decoration:none;white-space:nowrap}
+.mark span{color:var(--accent)}
+.nav{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-family:var(--mono);font-size:12px;text-decoration:none;color:var(--muted);padding:6px 9px;border-radius:6px;white-space:nowrap;transition:color .2s,background .2s}
+.nav a:hover,.nav a.on{color:var(--ink);background:var(--paper-2)}
+.nav a b{font-weight:400;color:var(--accent);margin-right:3px}
+.tools{display:flex;gap:6px;flex:none}
+.tbtn{font:500 12px var(--mono);color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:7px;height:30px;min-width:34px;padding:0 9px;cursor:pointer;transition:border-color .2s,background .2s}
+.tbtn:hover{border-color:var(--ink)}
+@media (max-width:820px){.nav{display:none}.tools{margin-left:auto}}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,92px) clamp(36px,5vw,64px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:end}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}}
+.eyebrow{display:flex;gap:12px;align-items:baseline;margin-bottom:28px}
+.eyebrow .dot{flex:none;transform:translateY(-1px)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--pass);box-shadow:0 0 0 4px color-mix(in oklab,var(--pass) 18%,transparent);animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 0 7px color-mix(in oklab,var(--pass) 6%,transparent)}}
+.name{font-weight:800;font-size:clamp(58px,9.4vw,124px);line-height:.88;letter-spacing:-.045em;font-variation-settings:"opsz" 96}
+.name .alt{display:block;font-weight:400;font-size:.36em;letter-spacing:-.02em;color:var(--muted);margin-top:.28em;font-family:var(--serif);font-style:italic}
+.lede{font-size:clamp(19px,1.6vw,22px);line-height:1.5;max-width:31em;margin-top:30px}
+.lede mark{background:linear-gradient(transparent 58%,var(--hi-soft) 58%);color:inherit;padding:0 .08em}
+.facts{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:34px;padding-top:20px;border-top:1px solid var(--rule)}
+.fact{display:flex;flex-direction:column;gap:2px}
+.fact strong{font:600 26px/1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fact span{font:12px var(--mono);color:var(--muted)}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 13px var(--mono);text-decoration:none;padding:11px 16px;border-radius:9px;border:1px solid var(--ink);transition:transform .2s,background .2s,color .2s}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn:hover{transform:translateY(-1px)}
+.btn.solid:hover{background:var(--accent);border-color:var(--accent)}
+.btn svg{width:15px;height:15px}
+
+/* instrument */
+.inst{border:1px solid var(--rule);border-radius:14px;background:var(--paper-2);overflow:hidden;position:relative}
+.inst-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--rule)}
+.inst canvas{display:block;width:100%;height:clamp(300px,34vw,400px);touch-action:pan-y;cursor:ew-resize}
+.inst-foot{display:flex;justify-content:space-between;gap:10px 18px;flex-wrap:wrap;padding:11px 16px;border-top:1px solid var(--rule);font-variant-numeric:tabular-nums}
+.inst-foot .val{color:var(--ink)}
+.inst-foot .ok{color:var(--pass)}
+.cap{font-size:15px;line-height:1.55;color:var(--muted);margin-top:14px;max-width:38em}
+.cap b{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink);letter-spacing:.04em;margin-right:6px}
+
+/* sections */
+section.s{padding-block:clamp(56px,8vw,104px);border-top:1px solid var(--rule)}
+.shead{display:grid;grid-template-columns:140px minmax(0,1fr);gap:20px;align-items:baseline;margin-bottom:clamp(30px,4vw,52px)}
+@media (max-width:720px){.shead{grid-template-columns:1fr;gap:8px}}
+.sno{font:500 13px var(--mono);color:var(--accent)}
+.shead h2{font-size:clamp(34px,4.6vw,56px);line-height:1;letter-spacing:-.035em}
+.shead p{grid-column:2;color:var(--muted);max-width:36em;margin-top:14px;font-size:18px}
+@media (max-width:720px){.shead p{grid-column:1}}
+
+/* papers */
+.papers{display:flex;flex-direction:column}
+.paper{display:grid;grid-template-columns:140px minmax(0,1fr) 230px;gap:20px 20px;padding-block:28px;border-top:1px solid var(--rule);position:relative}
+.paper:last-child{border-bottom:1px solid var(--rule)}
+.paper::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.paper:hover::before{transform:scaleX(1)}
+.p-meta{display:flex;flex-direction:column;gap:6px}
+.status{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font:500 11px var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid var(--rule);color:var(--muted)}
+.status.live{color:var(--pass);border-color:color-mix(in oklab,var(--pass) 45%,transparent)}
+.status.live::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.paper h3{font-size:clamp(21px,2vw,25px);line-height:1.18;letter-spacing:-.018em}
+.paper .find{margin-top:10px;color:color-mix(in oklab,var(--ink) 82%,var(--paper));max-width:40em}
+.links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:14px}
+.links a{font:500 12.5px var(--mono);color:var(--accent);text-decoration:none}
+.links a:hover{text-decoration:underline}
+.num{border-left:1px solid var(--rule);padding-left:18px;align-self:start}
+.num strong{display:block;font:600 30px/1.05 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.num strong .ci{font:400 16px var(--mono);letter-spacing:0;color:var(--accent);white-space:nowrap}
+.num span{display:block;font:12.5px/1.45 var(--mono);color:var(--muted);margin-top:8px}
+@media (max-width:900px){.paper{grid-template-columns:minmax(0,1fr)}.num{border-left:0;padding-left:0;border-top:1px dashed var(--rule);padding-top:14px}.p-meta{flex-direction:row;flex-wrap:wrap;align-items:center;gap:10px}}
+
+/* crossaudit */
+.ca{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px)}
+@media (max-width:900px){.ca{grid-template-columns:1fr}}
+.ca-lede{font-size:clamp(20px,1.8vw,23px);line-height:1.5}
+.quote{font:600 clamp(28px,3.4vw,42px)/1.08 var(--display);letter-spacing:-.03em;margin-top:30px}
+.quote em{font-style:normal;background:linear-gradient(transparent 62%,var(--hi-soft) 62%)}
+.quote-src{margin-top:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.chip{font:500 12px var(--mono);padding:5px 10px;border-radius:7px;background:var(--paper-2);border:1px solid var(--rule)}
+.chart{border:1px solid var(--rule);border-radius:14px;padding:22px 22px 18px;background:var(--paper-2)}
+.chart h3{font-size:17px;letter-spacing:-.01em;margin-bottom:4px}
+.metric{margin-top:22px}
+.metric:first-of-type{margin-top:16px}
+.row{display:grid;grid-template-columns:150px minmax(0,1fr) 54px;gap:12px;align-items:center;margin-top:9px}
+@media (max-width:520px){.row{grid-template-columns:96px minmax(0,1fr) 48px}}
+.row .who{font:12px/1.3 var(--mono);color:var(--muted)}
+.track{height:12px;background:color-mix(in oklab,var(--ink) 7%,transparent);border-radius:3px;overflow:hidden;position:relative}
+.track i{position:absolute;inset:0 auto 0 0;border-radius:3px;background:var(--muted);width:0;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.track i.x{background:var(--accent)}
+.row .pct{font:500 13px var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.axis{display:grid;grid-template-columns:150px minmax(0,1fr) 54px;gap:12px;margin-top:6px}
+@media (max-width:520px){.axis{grid-template-columns:96px minmax(0,1fr) 48px}}
+.axis div{display:flex;justify-content:space-between;font:10.5px var(--mono);color:var(--muted)}
+.chart .note{font-size:14px;color:var(--muted);margin-top:18px;line-height:1.5}
+
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;margin-top:clamp(36px,5vw,56px);border:1px solid var(--rule);border-radius:14px;overflow:hidden}
+@media (max-width:900px){.flow{grid-template-columns:1fr}}
+.step{padding:18px 18px 20px;border-right:1px solid var(--rule);position:relative;min-width:0}
+.step:last-child{border-right:0}
+@media (max-width:900px){.step{border-right:0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:34px minmax(0,1fr);padding:16px 18px}.step:last-child{border-bottom:0}.step>*{grid-column:2}.step>.k{grid-column:1;grid-row:1 / span 3;padding-top:3px}.step h4{margin-top:0}}
+.step .k{font:500 11px var(--mono);color:var(--accent);letter-spacing:.08em}
+.step h4{font:600 17px/1.2 var(--display);margin:10px 0 6px;letter-spacing:-.01em}
+.step p{font-size:15px;line-height:1.45;color:var(--muted)}
+.verdicts{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.v{font:500 10.5px var(--mono);padding:3px 7px;border-radius:5px;border:1px solid}
+.v.p{color:var(--pass);border-color:color-mix(in oklab,var(--pass) 45%,transparent)}
+.v.c{color:var(--warn);border-color:color-mix(in oklab,var(--warn) 45%,transparent)}
+.v.y{color:var(--accent);border-color:color-mix(in oklab,var(--accent) 45%,transparent)}
+.step.seal{background:var(--accent-soft)}
+.step .hash{font:11px/1.5 var(--mono);color:var(--muted);margin-top:10px;word-break:break-all}
+
+/* tools */
+.tools-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--rule)}
+@media (max-width:760px){.tools-list{grid-template-columns:1fr}}
+.tool{display:flex;flex-direction:column;gap:8px;padding:26px 24px 26px 0;border-bottom:1px solid var(--rule);text-decoration:none;position:relative;min-width:0}
+.tool:nth-child(even){padding-left:24px;padding-right:0;border-left:1px solid var(--rule)}
+@media (max-width:760px){.tool,.tool:nth-child(even){padding-left:0;padding-right:0;border-left:0}}
+.tool .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.tool h3{font-size:21px;letter-spacing:-.015em;transition:color .2s}
+.tool .arrow{font-family:var(--mono);color:var(--muted);transition:transform .25s,color .2s}
+.tool:hover h3,.tool:hover .arrow{color:var(--accent)}
+.tool:hover .arrow{transform:translate(3px,-3px)}
+.tool p{font-size:16.5px;line-height:1.5;color:color-mix(in oklab,var(--ink) 80%,var(--paper))}
+.tool .meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:4px}
+.lang{display:inline-flex;align-items:center;gap:6px}
+.lang::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,#999)}
+
+/* handbooks */
+.books{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+@media (max-width:860px){.books{grid-template-columns:1fr}}
+.book{border:1px solid var(--rule);border-radius:14px;padding:26px;display:flex;flex-direction:column;gap:14px;background:var(--paper);position:relative;overflow:hidden;min-width:0}
+.book .spine{position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent)}
+.book.b2 .spine{background:var(--hi)}
+.book h3{font-size:clamp(23px,2.3vw,28px);letter-spacing:-.025em;line-height:1.1}
+.book p:not(.label){font-size:16.5px;line-height:1.55;color:color-mix(in oklab,var(--ink) 82%,var(--paper))}
+.toc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--rule)}
+.toc li{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:10px;padding:7px 0;border-bottom:1px dashed var(--rule);font-size:15px;align-items:baseline}
+.toc li .r{font:500 11.5px var(--mono);color:var(--accent)}
+.toc li .c{font:11.5px var(--mono);color:var(--muted);white-space:nowrap}
+.book .links{margin-top:auto;padding-top:4px}
+
+/* principles */
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--rule)}
+@media (max-width:900px){.rules{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.rules{grid-template-columns:1fr}}
+.rule{padding:24px 22px 26px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:14px;justify-content:space-between}
+.rule p{font:400 clamp(19px,1.7vw,22px)/1.38 var(--serif);font-style:italic;letter-spacing:-.005em}
+.rule p::before{content:"“";color:var(--accent)} .rule p::after{content:"”";color:var(--accent)}
+:root[lang="zh"] .rule p{font-style:normal}
+:root[lang="zh"] .name .alt{font-style:normal}
+
+/* contact */
+.contact{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:end}
+@media (max-width:860px){.contact{grid-template-columns:1fr}}
+.big{font:800 clamp(42px,7vw,96px)/.92 var(--display);letter-spacing:-.045em}
+.big a{text-decoration:none;background:linear-gradient(var(--accent),var(--accent)) no-repeat left 92%/0 .08em;transition:background-size .5s cubic-bezier(.2,.7,.2,1)}
+.big a:hover{background-size:100% .08em}
+.term{font:13px/1.75 var(--mono);background:var(--paper-2);border:1px solid var(--rule);border-radius:12px;padding:18px 20px;overflow-x:auto;white-space:pre}
+.term .pr{color:var(--accent)} .term .ok{color:var(--pass)} .term .mu{color:var(--muted)}
+footer{border-top:1px solid var(--rule);padding-block:28px 40px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px}
+
+/* reveal: content is visible at rest; motion only enhances */
+.rv{transition:transform .8s cubic-bezier(.2,.7,.2,1),opacity .8s}
+.js .rv.pre{transform:translateY(14px);opacity:.001}
+@media (prefers-reduced-motion:reduce){.rv{transition:none}.js .rv.pre{transform:none;opacity:1}.dot{animation:none}.track i{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="bar" id="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">Z. Dong<span>.</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#papers"><b>§1</b><span data-i18n="n1">Papers</span></a>
+      <a href="#crossaudit"><b>§2</b>CrossAudit</a>
+      <a href="#tools"><b>§3</b><span data-i18n="n3">Tools</span></a>
+      <a href="#handbooks"><b>§4</b><span data-i18n="n4">Handbooks</span></a>
+      <a href="#principles"><b>§5</b><span data-i18n="n5">Principles</span></a>
+      <a href="#contact"><b>§6</b><span data-i18n="n6">Contact</span></a>
+    </nav>
+    <div class="tools">
+      <button class="tbtn" id="langBtn" type="button" aria-label="Switch language">中文</button>
+      <button class="tbtn" id="themeBtn" type="button" aria-label="Switch colour theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">
+        <span class="dot" aria-hidden="true"></span>
+        <span class="label" data-i18n="eyebrow">Cambridge · ML × materials science × agentic systems</span>
+      </div>
+      <h1 class="name">Zhaohe Dong<span class="alt" data-i18n="alt">Eric, to most people</span></h1>
+      <p class="lede" data-i18n="lede">I am an undergraduate building machine learning for materials science, and the audit machinery that lets <mark>AI-written science be checked, number by number.</mark></p>
+      <div class="facts">
+        <div class="fact"><strong>3,866</strong><span data-i18n="f1">contributions, past year</span></div>
+        <div class="fact"><strong>36</strong><span data-i18n="f2">repositories</span></div>
+        <div class="fact"><strong>4.17</strong><span data-i18n="f3">CrossAudit release</span></div>
+      </div>
+      <div class="ctas">
+        <a class="btn solid" href="https://github.com/dongzhaohe321418-lab" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          GitHub
+        </a>
+        <a class="btn" href="#papers" data-i18n="cta2">Read the papers ↓</a>
+      </div>
+    </div>
+
+    <figure class="rv" style="margin:0">
+      <div class="inst">
+        <div class="inst-head">
+          <span class="label" data-i18n="instL">Fig. 0 · Sort-match, live</span>
+          <span class="label">¹³C · CDCl₃ · ethyl benzoate</span>
+        </div>
+        <canvas id="spec" aria-label="Animated mirror plot: seven observed carbon-13 NMR peaks of ethyl benzoate above, a model's predicted shifts below, joined in sorted order while the predictions train toward the peaks."></canvas>
+        <div class="inst-foot mono">
+          <span><span class="label" style="margin-right:6px">MAE</span><span class="val" id="mae">—</span> ppm</span>
+          <span><span class="label" style="margin-right:6px" data-i18n="stepL">step</span><span class="val" id="stepN">0</span></span>
+          <span title="Minimum over every possible pairing, computed by brute force"><span class="label" style="margin-right:6px" data-i18n="crossL">best of 5,040</span><span class="val" id="opt">—</span> <span class="ok" id="optOk">✓</span></span>
+        </div>
+      </div>
+      <figcaption class="cap" data-i18n="cap"><b>FIG. 0</b>Observed peaks (top) carry no atom labels. Pairing predictions with peaks in sorted order is the optimal assignment for any convex cost, so a model can learn from bare peak lists with two <code class="mono">torch.sort</code> calls. Drag a predicted peak: the pairing re-sorts, the lines never cross, and the brute-force search over all 5,040 pairings agrees.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="s" id="papers">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="sno">§1</span>
+      <h2 data-i18n="h1">Papers &amp; preprints</h2>
+      <p data-i18n="h1p">Each write-up ships with its code, records and the reviews it went through. The number beside each is the result it stands on.</p>
+    </div>
+    <div class="papers">
+      <article class="paper rv">
+        <div class="p-meta"><span class="status live">arXiv · 2026</span><span class="mono" style="color:var(--muted)">cs.SE · cs.LG · cs.AI</span></div>
+        <div>
+          <h3>What Moves the Ceiling on Automated Audit: from General Code to Scientific Code, Results and Data</h3>
+          <p class="find" data-i18n="p1">An auditor from a different vendor, plus deterministic checks, measured against ground truth. The flag rate belongs to a configuration, not to the auditor: route, one rulebook sentence and the counting rule each move it. Three preregistered studies extend it to scientific code, results and data.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/audit-ceiling-paper" target="_blank" rel="noopener" data-i18n="lRepo">Records &amp; reviews ↗</a></div>
+        </div>
+        <div class="num"><strong>30.0% <span class="ci">[20.0, 40.7]</span></strong><span data-i18n="p1n">of defective programs that pass their visible tests, flagged by at least one of eight readings</span></div>
+      </article>
+
+      <article class="paper rv">
+        <div class="p-meta"><span class="status" data-i18n="pre">Preprint · 2026</span><span class="mono" style="color:var(--muted)">cs.CL · cs.LG</span></div>
+        <div>
+          <h3>Content or Context? Measuring Latent Communication Between Language Models</h3>
+          <p class="find" data-i18n="p2">A sender model passes hidden states through a learned bridge to a receiver that reads only the suffix. Donor messages split the gain into generic, article-level and window-specific parts.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/content-or-context" target="_blank" rel="noopener" data-i18n="lCode">Code &amp; paper ↗</a></div>
+        </div>
+        <div class="num"><strong>82% <span class="ci">[79, 85]</span></strong><span data-i18n="p2n">of the content gain recovered by bridges fitted only on LLM-written text (Pythia 70M → 160M)</span></div>
+      </article>
+
+      <article class="paper rv">
+        <div class="p-meta"><span class="status" data-i18n="pre">Preprint · 2026</span><span class="mono" style="color:var(--muted)">cs.LG · physics.chem-ph</span></div>
+        <div>
+          <h3>Is there a Hamiltonian inside a decision model?</h3>
+          <p class="find" data-i18n="p3">Reading a decision model's calibrated probabilities as local energies, E = −log p. The landscape is approximately but measurably incoherent, and for chemistry decisions most of the signal comes from a stretch factor stated in the prompt.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/jev-hamiltonian" target="_blank" rel="noopener" data-i18n="lCode">Code &amp; paper ↗</a></div>
+        </div>
+        <div class="num"><strong>10,145</strong><span data-i18n="p3n">distinct API calls, all cached and replayable offline, for about US$0.28</span></div>
+      </article>
+
+      <article class="paper rv">
+        <div class="p-meta"><span class="status live">arXiv 2601.18524</span><span class="mono" style="color:var(--muted)">NMR · GNN</span></div>
+        <div>
+          <h3>Sort-match self-supervision for NMR chemical shift prediction</h3>
+          <p class="find" data-i18n="p4">Optimal matching between predicted shifts and unassigned peaks reduces exactly to sorting under any convex per-atom cost, so a model can train on literature peak lists with no atom labels. Extended to 2-D HSQC with a sliced-Wasserstein loss.</p>
+          <div class="links"><a href="https://arxiv.org/abs/2601.18524" target="_blank" rel="noopener">arXiv ↗</a><a href="https://github.com/dongzhaohe321418-lab/nmr-ssl" target="_blank" rel="noopener" data-i18n="lCodeOnly">Code ↗</a></div>
+        </div>
+        <div class="num"><strong>3.57 <span class="ci">ppm</span></strong><span data-i18n="p4n">test MAE with 10% labels, against 4.09 ppm supervised. Same model, same data.</span></div>
+      </article>
+
+      <article class="paper rv">
+        <div class="p-meta"><span class="status" data-i18n="prep">In preparation</span><span class="mono" style="color:var(--muted)">XRD · crystals</span></div>
+        <div>
+          <h3>Sort-match self-supervision for powder XRD peak prediction</h3>
+          <p class="find" data-i18n="p5">The same theorem carries over to diffraction, predicting peak positions from 5,000 Materials Project structures. Intensities are not learned at this scale, and the write-up says so.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/xrd-ssl" target="_blank" rel="noopener" data-i18n="lCodeOnly">Code ↗</a></div>
+        </div>
+        <div class="num"><strong>4.09° <span class="ci">± 0.31</span></strong><span data-i18n="p5n">2θ MAE with 10% of labels, matching full supervision (4.13° ± 0.23)</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="crossaudit">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="sno">§2</span>
+      <h2>CrossAudit</h2>
+      <p data-i18n="h2p">A local, dual-source audit harness for AI-generated work. macOS app and command line.</p>
+    </div>
+    <div class="ca">
+      <div class="rv">
+        <p class="ca-lede" data-i18n="caLede">One model builds. A model from a different vendor reviews the committed result. Deterministic checks run first, and every task, finding, verdict and receipt is recorded in Git. Same-vendor pairs are refused by the harness, not by a prompt.</p>
+        <p class="quote" data-i18n="caQ">The separation buys <em>severity</em>, not sight.</p>
+        <p class="label quote-src" data-i18n="caQs">From the CrossAudit README, after measuring it</p>
+        <div class="chips">
+          <span class="chip">v4.17.0</span><span class="chip">macOS 13+</span><span class="chip">Python 3.10+</span><span class="chip">MIT</span>
+        </div>
+        <div class="links" style="margin-top:22px">
+          <a href="https://github.com/dongzhaohe321418-lab/crossaudit-harness" target="_blank" rel="noopener" data-i18n="lHarness">Harness ↗</a>
+          <a href="https://github.com/dongzhaohe321418-lab/crossaudit-harness/releases/latest" target="_blank" rel="noopener" data-i18n="lRel">Latest release ↗</a>
+          <a href="https://github.com/dongzhaohe321418-lab/crossaudit_evidence_lab" target="_blank" rel="noopener">Evidence Lab ↗</a>
+        </div>
+      </div>
+      <div class="chart rv" id="chart">
+        <h3 data-i18n="chT">Self-review against a stranger</h3>
+        <p class="label" data-i18n="chS">30-instance study · share of increments</p>
+        <div class="metric">
+          <p class="mono" style="font-weight:500" data-i18n="m1">Blocked</p>
+          <div class="row"><span class="who" data-i18n="self">Same model</span><div class="track"><i data-w="3.3"></i></div><span class="pct">3.3%</span></div>
+          <div class="row"><span class="who" data-i18n="other">Other vendor</span><div class="track"><i class="x" data-w="80"></i></div><span class="pct">80.0%</span></div>
+        </div>
+        <div class="metric">
+          <p class="mono" style="font-weight:500" data-i18n="m2">Defects named</p>
+          <div class="row"><span class="who" data-i18n="self">Same model</span><div class="track"><i data-w="31.7"></i></div><span class="pct">31.7%</span></div>
+          <div class="row"><span class="who" data-i18n="other">Other vendor</span><div class="track"><i class="x" data-w="19.8"></i></div><span class="pct">19.8%</span></div>
+        </div>
+        <div class="axis" aria-hidden="true"><span></span><div><span>0</span><span>25</span><span>50</span><span>75</span><span>100%</span></div><span></span></div>
+        <p class="note" data-i18n="chN">The model reviewing its own work saw more defects and filed 61 of its 64 findings as advisory. One task, one vendor pair; the corrections are published with the benchmarks.</p>
+      </div>
+    </div>
+
+    <div class="flow rv" aria-label="CrossAudit round">
+      <div class="step"><span class="k">01</span><h4 data-i18n="s1">Generator</h4><p data-i18n="s1p">Vendor A writes the deliverable and commits it.</p></div>
+      <div class="step"><span class="k">02</span><h4 data-i18n="s2">Checks</h4><p data-i18n="s2p">Path, schema, unit, convergence and provenance checks run before any model opinion.</p></div>
+      <div class="step"><span class="k">03</span><h4 data-i18n="s3">Auditor</h4><p data-i18n="s3p">Vendor B reads only the committed files and returns tiered findings.</p></div>
+      <div class="step"><span class="k">04</span><h4 data-i18n="s4">Verdict</h4><div class="verdicts"><span class="v p" data-i18n="vp">Passed</span><span class="v c" data-i18n="vc">Needs changes</span><span class="v y" data-i18n="vy">Needs you</span></div></div>
+      <div class="step seal"><span class="k">05</span><h4 data-i18n="s5">Receipt</h4><p data-i18n="s5p">Bound to the verdict, rules, commit and evidence; sealed in Git.</p><p class="hash">sha256 · hash-chained ledger</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="tools">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="sno">§3</span>
+      <h2 data-i18n="h3">Tools &amp; instruments</h2>
+      <p data-i18n="h3p">Software built for a lab bench, a literature search or a procurement form.</p>
+    </div>
+    <div class="tools-list">
+      <a class="tool rv" href="https://github.com/dongzhaohe321418-lab/scientific-figure-studio" target="_blank" rel="noopener">
+        <div class="top"><h3>Scientific Figure Studio</h3><span class="arrow">↗</span></div>
+        <p data-i18n="t1">A Codex skill for evidence-grounded scientific illustration: the best correct PNG first, then a genuinely editable SVG rebuilt towards it. Science, appearance and editability are reviewed separately.</p>
+        <div class="meta mono"><span class="lang" style="--c:#3572A5">Python</span><span>★ 10</span></div>
+      </a>
+      <a class="tool rv" href="https://labscope.vercel.app" target="_blank" rel="noopener">
+        <div class="top"><h3>LabScope</h3><span class="arrow">↗</span></div>
+        <p data-i18n="t2">Search 269 gas-analyser models and see the published papers that used each one, with the sentence from their methods section, pulled live from Europe PMC and OpenAlex.</p>
+        <div class="meta mono"><span class="lang" style="--c:#3572A5">Python</span><span data-i18n="live">Live demo</span></div>
+      </a>
+      <a class="tool rv" href="https://github.com/dongzhaohe321418-lab/matsci-env" target="_blank" rel="noopener">
+        <div class="top"><h3>matsci-env</h3><span class="arrow">↗</span></div>
+        <p data-i18n="t3">A pinned, tested stack for computational materials science: DFT, MACE and other interatomic potentials, MD, workflows and visualisation. Three commands to a working environment.</p>
+        <div class="meta mono"><span class="lang" style="--c:#89e051">Shell</span><span>GPAW · MACE · ASE</span></div>
+      </a>
+      <a class="tool rv" href="https://github.com/dongzhaohe321418-lab/perovskite-screening" target="_blank" rel="noopener">
+        <div class="top"><h3 data-i18n="t4h">Perovskite screening</h3><span class="arrow">↗</span></div>
+        <p data-i18n="t4">Iodine-vacancy migration in γ-CsPbI<sub>3</sub> and FA perovskites. GA⁺ and Sr²⁺ additives screened with MACE across 108 paths and 36 hosts; charge-state barriers gated behind DFT.</p>
+        <div class="meta mono"><span class="lang" style="--c:#3572A5">Python</span><span>MACE · PBE+D3</span></div>
+      </a>
+      <a class="tool rv" href="https://github.com/dongzhaohe321418-lab/zemax-mcp" target="_blank" rel="noopener">
+        <div class="top"><h3>Eye Illumination Web Lab</h3><span class="arrow">↗</span></div>
+        <p data-i18n="t5">A local, bilingual web lab for chick and human posterior-eye illumination: parameter sweeps, PDF reports and guided Zemax OpticStudio verification, with optional MCP automation.</p>
+        <div class="meta mono"><span class="lang" style="--c:#DA5B0B">Jupyter</span><span>Zemax · MCP</span></div>
+      </a>
+      <a class="tool rv" href="https://github.com/dongzhaohe321418-lab/csi300-spmo-index" target="_blank" rel="noopener">
+        <div class="top"><h3>CSI300 × SPMO index</h3><span class="arrow">↗</span></div>
+        <p data-i18n="t6">A point-in-time backtest of an S&amp;P-style momentum index on the historical CSI 300, 2005 to 2026, with no tuned parameters: 9.83% CAGR against 7.68%, with a deeper maximum drawdown.</p>
+        <div class="meta mono"><span class="lang" style="--c:#3572A5">Python</span><span data-i18n="bt">Backtest</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="handbooks">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="sno">§4</span>
+      <h2 data-i18n="h4">Open handbooks</h2>
+      <p data-i18n="h4p">Written for the student who finds the field hard and no clear way in. Free to read, with code you can run.</p>
+    </div>
+    <div class="books">
+      <article class="book rv">
+        <span class="spine" aria-hidden="true"></span>
+        <p class="label" data-i18n="b1l">43 chapters · 10 projects · runs in the browser</p>
+        <h3 data-i18n="b1h">Programming &amp; Computer Systems Handbook</h3>
+        <p data-i18n="b1">From bits and binary to data structures and algorithms, then a from-scratch AI-engineering track. Every Python snippet runs in the browser through Pyodide and is executed in CI on every push.</p>
+        <ol class="toc">
+          <li><span class="r">I</span><span data-i18n="b1a">The machine</span><span class="c">0–1</span></li>
+          <li><span class="r">II–III</span><span data-i18n="b1b">Programming I and II</span><span class="c">2–22</span></li>
+          <li><span class="r">IV</span><span data-i18n="b1c">Systems &amp; practice</span><span class="c">23–25</span></li>
+          <li><span class="r">V</span><span data-i18n="b1d">AI engineering: tokenizer, attention, KV cache, MCP, RAG, DPO, GRPO</span><span class="c">26–34</span></li>
+          <li><span class="r">VI</span><span data-i18n="b1e">Programming III</span><span class="c">35–42</span></li>
+        </ol>
+        <div class="links"><a href="https://dongzhaohe321418-lab.github.io/programming-handbook/" target="_blank" rel="noopener" data-i18n="read">Read online ↗</a><a href="https://github.com/dongzhaohe321418-lab/programming-handbook" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+      </article>
+      <article class="book b2 rv">
+        <span class="spine" aria-hidden="true"></span>
+        <p class="label" data-i18n="b2l">Three tiers · five capstones · ★ 4</p>
+        <h3 data-i18n="b2h">Materials Simulation Handbook</h3>
+        <p data-i18n="b2">A self-contained textbook through the core of computational materials science, taking a reader from A-level maths and physics to running foundation-model workflows such as MACE-MP-0.</p>
+        <ol class="toc">
+          <li><span class="r">T0</span><span data-i18n="b2a">Prerequisites: maths, Python, crystals, solid-state physics</span><span class="c">0–3.5</span></li>
+          <li><span class="r">T1</span><span data-i18n="b2b">Core: DFT in Quantum ESPRESSO, MD in LAMMPS, statistical mechanics, MLIPs to MACE, crystal GNNs</span><span class="c">4–10</span></li>
+          <li><span class="r">T2</span><span data-i18n="b2c">Research: active learning, foundation models, multiscale, your own project</span><span class="c">11–14</span></li>
+          <li><span class="r">P1–5</span><span data-i18n="b2d">Capstones: defect energies, MLIP melting point, band-gap screening, MLIP from scratch, Bayesian catalyst search</span><span class="c">6–10 wk</span></li>
+        </ol>
+        <div class="links"><a href="https://dongzhaohe321418-lab.github.io/materials-simulation-handbook/" target="_blank" rel="noopener" data-i18n="read">Read online ↗</a><a href="https://github.com/dongzhaohe321418-lab/materials-simulation-handbook" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="principles">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="sno">§5</span>
+      <h2 data-i18n="h5">House rules</h2>
+      <p data-i18n="h5p">Lines lifted from the READMEs of my own repositories. They are what the work is held to.</p>
+    </div>
+    <div class="rules">
+      <div class="rule rv"><p data-i18n="r1">Barriers computed at different theory fingerprints are never compared.</p><span class="label">perovskite-screening</span></div>
+      <div class="rule rv"><p data-i18n="r2">MACE-level numbers are never presented as DFT or experiment.</p><span class="label">perovskite-screening</span></div>
+      <div class="rule rv"><p data-i18n="r3">Every correction leaves the superseded record in place, marked, never overwritten.</p><span class="label">perovskite-screening</span></div>
+      <div class="rule rv"><p data-i18n="r4">A failed check blocks whatever the model says.</p><span class="label">crossaudit-harness</span></div>
+      <div class="rule rv"><p data-i18n="r5">Figure outputs are generated, never hand-edited.</p><span class="label">audit-ceiling-paper</span></div>
+      <div class="rule rv"><p data-i18n="r6">Scientific errors cannot be compensated for by attractive styling.</p><span class="label">scientific-figure-studio</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="contact">
+  <div class="wrap contact">
+    <div class="rv">
+      <span class="sno">§6</span>
+      <p class="big" style="margin-top:14px"><a href="https://github.com/dongzhaohe321418-lab" target="_blank" rel="noopener" data-i18n="ct">Say hello on GitHub.</a></p>
+      <p class="cap" style="margin-top:20px" data-i18n="ctp">Open an issue on any repository, or reach out about materials ML, audit of AI-generated research, or the handbooks.</p>
+    </div>
+<pre class="term rv" aria-label="Motto"><span class="pr">$</span> whoami
+Zhaohe (Eric) Dong · Cambridge
+<span class="pr">$</span> echo $MOTTO
+every number backed by evidence,
+in science and in software
+<span class="pr">$</span> crossaudit verify
+<span class="ok">AUDIT: PASS</span>  <span class="mu">receipt sealed in git</span></pre>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap mono" style="color:var(--muted)">
+    <span>© 2026 Zhaohe (Eric) Dong</span>
+    <span data-i18n="foot">Built from github.com/dongzhaohe321418-lab · read 8 Nov 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement; root.classList.add('js');
+  function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+
+  /* ---------- language ---------- */
+  var ZH={
+    n1:"论文",n3:"工具",n4:"手册",n5:"原则",n6:"联系",
+    eyebrow:"剑桥 · 机器学习 × 材料科学 × 智能体系统",
+    alt:"大多数人叫我 Eric",
+    lede:"我是一名本科生，做面向材料科学的机器学习，也做一套审计系统，让 <mark>AI 写出的科研可以被逐个数字地核查。</mark>",
+    f1:"过去一年的贡献",f2:"个仓库",f3:"CrossAudit 最新版本",cta2:"阅读论文 ↓",
+    instL:"图 0 · 排序匹配，实时运行",stepL:"步数",crossL:"5,040 种中最优",
+    cap:"<b>图 0</b>上方的实测峰没有原子归属。把预测值与实测峰按排序后一一配对，对任意凸代价都是最优指派，所以模型只用两次 <code class=\"mono\">torch.sort</code> 就能从无归属的峰列表中学习。拖动下方任一预测峰：配对实时重排，连线永不交叉，对全部 5,040 种配对的暴力搜索也给出同一个最优值。",
+    h1:"论文与预印本",h1p:"每篇文章都附带代码、记录和它经过的评审。右侧的数字，是这篇工作立足的结果。",
+    pre:"预印本 · 2026",prep:"撰写中",
+    p1:"把“另一家厂商的审计模型 + 确定性检查”与真实标准对照测量。检出率属于一个配置，而不属于审计模型本身：路由、规则里的一句话、计数规则都会改变它。三项预注册研究把它推广到科学代码、结果与数据。",
+    p1n:"通过可见测试、但实际有缺陷的程序中，被八次独立审读至少一次标出的比例",
+    p2:"发送模型把隐藏状态经过一个学习到的“桥”传给只读后缀的接收模型。用其他文章与同一文章的供体消息，把收益拆成通用、文章级和窗口级三部分。",
+    p2n:"只用 LLM 写的文本拟合的桥，恢复的内容收益比例（Pythia 70M → 160M）",
+    p3:"把决策模型的校准概率读作局部能量 E = −log p。这个能量地形近似一致、但可测地不自洽；在化学决策上，大部分信号来自题目中给出的键伸缩因子。",
+    p3n:"次不重复的 API 调用，全部缓存、可离线复现，总花费约 0.28 美元",
+    p4:"在任意凸的逐原子代价下，预测化学位移与无归属峰之间的最优匹配严格等价于排序，因此模型能直接用文献峰列表训练，无需原子标注。并以切片 Wasserstein 损失推广到二维 HSQC。",
+    p4n:"10% 标注下的测试 MAE，监督基线为 4.09 ppm。模型和数据完全相同。",
+    p5:"同一定理迁移到衍射：从 5,000 个 Materials Project 结构预测峰位。在这个规模下峰强度学不出来，文中如实写明。",
+    p5n:"仅用 10% 标注的 2θ MAE，与全监督（4.13° ± 0.23）持平",
+    lRepo:"记录与评审 ↗",lCode:"代码与论文 ↗",lCodeOnly:"代码 ↗",
+    h2p:"面向 AI 生成成果的本地双源审计框架。macOS 应用 + 命令行。",
+    caLede:"一个模型负责生成，另一家厂商的模型审查已提交的结果。确定性检查先跑，每个任务、发现、裁决和收据都记录在 Git 里。同厂商配对由框架直接拒绝，而不是靠提示词约束。",
+    caQ:"隔离换来的是<em>严格</em>，而不是视力。",caQs:"摘自 CrossAudit README，基于实测",
+    lHarness:"框架 ↗",lRel:"最新发布 ↗",
+    chT:"自审 vs. 陌生人审",chS:"30 个实例 · 占增量的比例",m1:"被拦截",m2:"指出缺陷",self:"同一模型",other:"另一厂商",
+    chN:"自审的模型其实看到了更多缺陷，却把 64 条发现中的 61 条记为“建议”。单一任务、单一厂商组合；更正记录与基准一同公开。",
+    s1:"生成",s1p:"厂商 A 写出交付物并提交。",s2:"检查",s2p:"路径、结构、单位、收敛与溯源检查，先于任何模型意见运行。",
+    s3:"审计",s3p:"厂商 B 只读已提交的文件，返回分级的发现。",s4:"裁决",vp:"通过",vc:"需修改",vy:"需要你",
+    s5:"收据",s5p:"绑定裁决、规则、提交与证据，封存在 Git 中。",
+    h3:"工具与仪器",h3p:"为实验台、文献检索和采购表单而写的软件。",
+    t1:"一个 Codex 技能，用于有证据支撑的科研插图：先得到科学正确的最佳 PNG，再朝它重建真正可编辑的 SVG。科学性、外观与可编辑性分开审查。",
+    t2:"检索 269 款气体分析仪型号，实时从 Europe PMC 与 OpenAlex 找出真正用过它的论文，并给出方法节里的原句。",live:"在线体验",
+    t3:"一套锁定版本、经过测试的计算材料环境：DFT、MACE 等机器学习势、分子动力学、工作流与可视化。三条命令即可用。",
+    t4h:"钙钛矿筛选",t4:"γ-CsPbI<sub>3</sub> 与 FA 钙钛矿中的碘空位迁移。用 MACE 在 36 个宿主、108 条路径上筛选 GA⁺ 和 Sr²⁺ 添加剂；电荷态势垒由 DFT 把关。",
+    t5:"面向小鸡与人眼后极照明研究的本地双语 Web 实验室：参数扫描、PDF 报告、引导式 Zemax OpticStudio 验证，以及可选的 MCP 自动化。",
+    t6:"在历史 CSI 300 成分股上对标普式动量指数做时点回测，2005–2026，不调任何参数：年化 9.83%，对比 7.68%，最大回撤也更深。",bt:"回测",
+    h4:"开放手册",h4p:"写给觉得这个领域很难、又找不到入口的学生。免费阅读，代码可直接运行。",
+    b1l:"43 章 · 10 个项目 · 浏览器内运行",b1h:"编程与计算机系统手册",
+    b1:"从比特与二进制，到数据结构与算法，再到一条从零手写的 AI 工程线。每段 Python 都能通过 Pyodide 在浏览器里运行，并在每次推送时由 CI 执行。",
+    b1a:"机器是什么",b1b:"程序设计 I 与 II",b1c:"系统与工程实践",b1d:"AI 工程：分词器、注意力、KV 缓存、MCP、RAG、DPO、GRPO",b1e:"程序设计 III",
+    read:"在线阅读 ↗",src:"源码 ↗",
+    b2l:"三层结构 · 五个综合项目 · ★ 4",b2h:"材料模拟手册",
+    b2:"一本自成体系的计算材料科学教材，带读者从 A-level 数学物理一路走到运行 MACE-MP-0 这样的基础模型工作流。",
+    b2a:"先修：数学、Python、晶体、固体物理",b2b:"核心：Quantum ESPRESSO 中的 DFT、LAMMPS 分子动力学、统计力学、从描述符到 MACE 的机器学习势、晶体图神经网络",b2c:"研究：主动学习、原子基础模型、多尺度耦合、设计你自己的课题",b2d:"综合项目：缺陷形成能、MLIP 熔点、带隙筛选、从零实现 MLIP、贝叶斯催化剂搜索",
+    h5:"工作守则",h5p:"摘自我自己仓库 README 里的原句。这些是工作要守住的标准。",
+    r1:"不同理论指纹下算出的势垒，永远不放在一起比较。",r2:"MACE 级别的数字，永远不当作 DFT 或实验结果呈现。",
+    r3:"每次更正都保留被取代的记录，加以标注，绝不覆盖。",r4:"检查一旦失败，无论模型怎么说都会被拦下。",
+    r5:"图像输出由脚本生成，从不手工修改。",r6:"科学错误无法用好看的样式弥补。",
+    ct:"来 GitHub 打个招呼。",ctp:"可以在任何仓库开 issue，也欢迎聊材料机器学习、AI 科研成果审计，或这两本手册。",
+    foot:"内容取自 github.com/dongzhaohe321418-lab · 读取于 2026 年 11 月 8 日"
+  };
+  var nodes=[].slice.call(document.querySelectorAll('[data-i18n]'));
+  nodes.forEach(function(n){n._en=n.innerHTML});
+  var langBtn=document.getElementById('langBtn');
+  function setLang(l){
+    nodes.forEach(function(n){var k=n.getAttribute('data-i18n');n.innerHTML=(l==='zh'&&ZH[k])?ZH[k]:n._en});
+    root.setAttribute('lang',l==='zh'?'zh':'en');
+    langBtn.textContent=l==='zh'?'EN':'中文';
+    langBtn.setAttribute('aria-label',l==='zh'?'Switch to English':'切换到中文');
+    store('lang',l);
+  }
+  var startLang=store('lang')||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en');
+  setLang(startLang);
+  langBtn.addEventListener('click',function(){setLang(root.getAttribute('lang')==='zh'?'en':'zh')});
+
+  /* ---------- theme ---------- */
+  var themeBtn=document.getElementById('themeBtn');
+  var mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function isDark(){var t=root.getAttribute('data-theme');return t?t==='dark':mq.matches}
+  var savedTheme=store('theme'); if(savedTheme&&!root.getAttribute('data-theme'))root.setAttribute('data-theme',savedTheme);
+  themeBtn.addEventListener('click',function(){var t=isDark()?'light':'dark';root.setAttribute('data-theme',t);store('theme',t)});
+
+  /* ---------- sticky bar + section highlight ---------- */
+  var bar=document.getElementById('bar');
+  var links=[].slice.call(document.querySelectorAll('.nav a'));
+  function onScroll(){bar.classList.toggle('scrolled',window.scrollY>8)}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  if('IntersectionObserver' in window){
+    var secObs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id)})}})},{rootMargin:'-45% 0px -50% 0px'});
+    document.querySelectorAll('section.s').forEach(function(s){secObs.observe(s)});
+  }
+
+  /* ---------- reveal (only below the fold; never hides first frame) ---------- */
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bars=[].slice.call(document.querySelectorAll('.track i'));
+  function fillBars(){bars.forEach(function(b){b.style.width=b.getAttribute('data-w')+'%'})}
+  if('IntersectionObserver' in window&&!reduce){
+    var vh=window.innerHeight;
+    var rvs=[].slice.call(document.querySelectorAll('.rv')).filter(function(el){return el.getBoundingClientRect().top>vh*0.95});
+    rvs.forEach(function(el){el.classList.add('pre')});
+    var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=rvs.indexOf(e.target);e.target.style.transitionDelay=((i%3)*70)+'ms';e.target.classList.remove('pre');ro.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    rvs.forEach(function(el){ro.observe(el)});
+    var chart=document.getElementById('chart');
+    var co=new IntersectionObserver(function(es){if(es[0].isIntersecting){fillBars();co.disconnect()}},{threshold:.35});
+    co.observe(chart);
+    setTimeout(fillBars,4000);
+  } else fillBars();
+
+  /* ---------- Fig. 0: sort-match mirror plot ---------- */
+  var cv=document.getElementById('spec'),ctx=cv.getContext('2d');
+  var maeEl=document.getElementById('mae'),stepEl=document.getElementById('stepN'),optEl=document.getElementById('opt'),okEl=document.getElementById('optOk');
+  // every assignment of 7 predictions to 7 peaks (7! = 5,040), for a live brute-force check of the sort-match theorem
+  var PERMS=[];(function perm(a,l){if(l===a.length){PERMS.push(a.slice());return}for(var i=l;i<a.length;i++){var t=a[l];a[l]=a[i];a[i]=t;perm(a,l+1);t=a[l];a[l]=a[i];a[i]=t}})([0,1,2,3,4,5,6],0);
+  function bestAll(){var b=1e9;for(var q=0;q<PERMS.length;q++){var pm=PERMS[q],s=0;for(var k=0;k<7;k++){s+=Math.abs(pred[pm[k]]-obsSorted[k]);if(s>=b)break}if(s<b)b=s}return b/7}
+  function readout(){var m=mae(),b=bestAll();maeEl.textContent=m.toFixed(2);optEl.textContent=b.toFixed(2);okEl.textContent=Math.abs(m-b)<1e-9?'✓':'✗';stepEl.textContent=step}
+  // ethyl benzoate 13C (CDCl3), ppm; relative heights (2C signals taller, quaternary short)
+  var OBS=[166.5,132.8,130.5,129.5,128.3,60.9,14.3], H=[0.42,0.62,0.36,1,0.94,0.66,0.7];
+  var obsSorted=OBS.slice().sort(function(a,b){return a-b});
+  var hByPpm={};OBS.forEach(function(v,i){hByPpm[v]=H[i]});
+  var pred=[],ph=[],step=0,drag=-1,lastDrag=0,calm=0,W=0,Hh=0,dpr=1,col={};
+  function gauss(){var u=1-Math.random(),v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+  function reset(){pred=OBS.map(function(v){return Math.max(4,Math.min(196,v+gauss()*22))});ph=H.map(function(h){return .45+.5*Math.random()});step=0;calm=0}
+  function readCols(){var s=getComputedStyle(root);['--ink','--muted','--rule','--accent','--hi','--paper-2'].forEach(function(k){col[k]=s.getPropertyValue(k).trim()})}
+  function size(){var r=cv.getBoundingClientRect();dpr=Math.min(2,window.devicePixelRatio||1);W=r.width;Hh=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(Hh*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+  var padL=22,padR=22;
+  function X(ppm){return padL+(200-ppm)/200*(W-padL-padR)}
+  function P(x){return 200-(x-padL)/(W-padL-padR)*200}
+  function order(){return pred.map(function(v,i){return i}).sort(function(a,b){return pred[a]-pred[b]})}
+  function mae(){var o=order(),s=0;o.forEach(function(i,k){s+=Math.abs(pred[i]-obsSorted[k])});return s/o.length}
+  function draw(){
+    ctx.clearRect(0,0,W,Hh);
+    var top=Hh*0.43,bot=Hh*0.57,amp=Hh*0.30,axisY=Hh-26;
+    // faint chart-paper grid
+    ctx.strokeStyle=col['--rule'];ctx.lineWidth=1;ctx.globalAlpha=.55;
+    for(var p=0;p<=200;p+=10){var x=Math.round(X(p))+.5;ctx.beginPath();ctx.moveTo(x,14);ctx.lineTo(x,axisY);ctx.stroke()}
+    ctx.globalAlpha=1;
+    // baselines
+    ctx.strokeStyle=col['--muted'];ctx.globalAlpha=.6;
+    ctx.beginPath();ctx.moveTo(padL,top+.5);ctx.lineTo(W-padR,top+.5);ctx.moveTo(padL,bot+.5);ctx.lineTo(W-padR,bot+.5);ctx.stroke();ctx.globalAlpha=1;
+    // matches (sorted to sorted)
+    var o=order();
+    ctx.lineWidth=1.25;
+    o.forEach(function(i,k){
+      var x1=X(obsSorted[k]),x2=X(pred[i]);
+      ctx.strokeStyle=col['--accent'];ctx.globalAlpha=.55;
+      ctx.beginPath();ctx.moveTo(x1,top);ctx.bezierCurveTo(x1,(top+bot)/2,x2,(top+bot)/2,x2,bot);ctx.stroke();
+    });
+    ctx.globalAlpha=1;
+    // observed sticks (up)
+    ctx.strokeStyle=col['--ink'];ctx.lineWidth=2;
+    OBS.forEach(function(v,i){var x=X(v);ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,top-amp*H[i]);ctx.stroke()});
+    // predicted sticks (down)
+    pred.forEach(function(v,i){var x=X(v);
+      ctx.strokeStyle=col['--accent'];ctx.lineWidth=i===drag?3:2;
+      ctx.beginPath();ctx.moveTo(x,bot);ctx.lineTo(x,bot+amp*ph[i]);ctx.stroke();
+      ctx.fillStyle=i===drag?col['--hi']:col['--accent'];
+      ctx.beginPath();ctx.arc(x,bot+amp*ph[i],i===drag?5:3.2,0,Math.PI*2);ctx.fill();
+    });
+    // labels
+    ctx.font='500 10.5px "JetBrains Mono", ui-monospace, monospace';ctx.fillStyle=col['--muted'];
+    var zh=root.getAttribute('lang')==='zh';
+    ctx.textAlign='left';
+    ctx.fillText(zh?'实测 · 无归属':'OBSERVED · UNASSIGNED',padL,24);
+    ctx.fillText(zh?'模型预测':'PREDICTED',padL,axisY-8);
+    // axis (NMR convention: high ppm on the left)
+    ctx.strokeStyle=col['--muted'];ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(padL,axisY+.5);ctx.lineTo(W-padR,axisY+.5);ctx.stroke();
+    ctx.textAlign='center';
+    for(var t=200;t>=0;t-=50){var tx=X(t);ctx.beginPath();ctx.moveTo(tx,axisY);ctx.lineTo(tx,axisY+4);ctx.stroke();
+      if(t>0) ctx.fillText(String(t),tx,axisY+16)}
+    ctx.textAlign='right';ctx.fillText('δ / ppm',W-padR,axisY+16);
+  }
+  var running=true,raf=0,frame=0;
+  function tick(){
+    if(drag<0&&performance.now()-lastDrag>1400){
+      var o=order();
+      o.forEach(function(i,k){pred[i]+=0.011*(obsSorted[k]-pred[i])+gauss()*0.05});
+      step++;
+      var m=mae(); if(m<0.4){calm++; if(calm>150) reset()}
+    }
+    if(frame++%6===0)readout();
+    draw();
+    if(running) raf=requestAnimationFrame(tick);
+  }
+  function start(){if(!running){running=true;raf=requestAnimationFrame(tick)}}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  reset();readCols();size();
+  if(reduce){ // still image, partway trained
+    for(var s=0;s<90;s++){var o=order();o.forEach(function(i,k){pred[i]+=0.011*(obsSorted[k]-pred[i])});step++}
+    running=false;draw();readout();
+  } else {
+    raf=requestAnimationFrame(tick);
+    if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?start():stop()}).observe(cv)}
+  }
+  if('ResizeObserver' in window){new ResizeObserver(function(){size();draw()}).observe(cv)}else window.addEventListener('resize',function(){size();draw()});
+  function recolor(){readCols();draw()}
+  if(mq.addEventListener)mq.addEventListener('change',recolor);
+  new MutationObserver(function(){setTimeout(recolor,30)}).observe(root,{attributes:true,attributeFilter:['data-theme','lang']});
+  // drag a predicted peak
+  function local(e){var r=cv.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+  cv.addEventListener('pointerdown',function(e){
+    var p=local(e),best=-1,bd=18;
+    pred.forEach(function(v,i){var d=Math.abs(X(v)-p.x);if(d<bd){bd=d;best=i}});
+    if(best<0&&p.y>Hh*0.5){pred.forEach(function(v,i){var d=Math.abs(X(v)-p.x);if(best<0||d<Math.abs(X(pred[best])-p.x))best=i})}
+    if(best>=0){drag=best;cv.setPointerCapture(e.pointerId);pred[drag]=Math.max(0,Math.min(200,P(p.x)));if(reduce)draw();e.preventDefault()}
+  });
+  cv.addEventListener('pointermove',function(e){if(drag<0)return;var p=local(e);pred[drag]=Math.max(0,Math.min(200,P(p.x)));if(!running){draw();readout()}});
+  function end(){if(drag>=0){drag=-1;lastDrag=performance.now();calm=0;if(!running)draw()}}
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+})();
+</script>
+</body>
+</html>
