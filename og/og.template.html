@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400&display=block">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{width:1200px;height:627px;overflow:hidden}
+body{background:#F1F2EE;color:#14171C;font-family:"Newsreader",Georgia,serif;position:relative}
+.frame{position:absolute;inset:0;padding:64px 64px 52px 72px;display:grid;grid-template-columns:1fr 476px;gap:48px}
+.frame::before{content:"";position:absolute;left:72px;right:64px;top:40px;height:1.5px;background:#14171C}
+.left{display:flex;flex-direction:column;padding-top:20px}
+.eyebrow{display:flex;align-items:center;gap:12px;font:500 15px "JetBrains Mono",monospace;letter-spacing:.09em;text-transform:uppercase;color:#5A626C}
+.dot{width:9px;height:9px;border-radius:50%;background:#1D7A4B;box-shadow:0 0 0 5px rgba(29,122,75,.16)}
+h1{font:800 112px/.88 "Bricolage Grotesque",sans-serif;letter-spacing:-.045em;margin-top:30px;font-variation-settings:"opsz" 96}
+.sub{font:italic 400 34px/1.15 "Newsreader",serif;color:#5A626C;margin-top:20px;letter-spacing:-.01em}
+.sub mark{background:linear-gradient(transparent 60%,rgba(229,179,15,.38) 60%);color:#14171C}
+.threads{display:grid;grid-template-columns:auto auto;justify-content:start;gap:12px 36px;margin-top:auto;font:500 15px "JetBrains Mono",monospace;color:#2B3038}
+.threads span{display:inline-flex;align-items:center;gap:9px}
+.threads i{width:10px;height:10px;border-radius:50%}
+.url{font:500 15px "JetBrains Mono",monospace;color:#5A626C;margin-top:22px;letter-spacing:.02em}
+.url b{color:#2340C4;font-weight:500}
+.card{align-self:center;border:1.5px solid #D2D5CE;border-radius:18px;background:#E8EAE4;overflow:hidden}
+.head,.foot{display:flex;justify-content:space-between;padding:13px 12px;font:500 12px "JetBrains Mono",monospace;letter-spacing:.09em;text-transform:uppercase;color:#5A626C}
+.head{border-bottom:1.5px solid #D2D5CE}.foot{border-top:1.5px solid #D2D5CE}
+.foot b{color:#14171C;font-weight:500}.foot .ok{color:#1D7A4B}
+.plot{padding:10px 12px 2px}
+.cap{font:italic 400 17px/1.35 "Newsreader",serif;color:#5A626C;padding:0 4px;margin-top:14px}
+</style></head>
+<body><div class="frame">
+  <div class="left">
+    <div class="eyebrow"><span class="dot"></span>Cambridge · Co-founder, Tubby Labs</div>
+    <h1>Zhaohe<br>Dong</h1>
+    <p class="sub">Machine learning for science,<br><mark>built to be checked.</mark></p>
+    <div class="threads">
+      <span><i style="background:#2340C4"></i>Auditing AI</span>
+      <span><i style="background:#A47700"></i>Chemistry &amp; materials ML</span>
+      <span><i style="background:#B3305F"></i>Open tools</span>
+      <span><i style="background:#0B7A83"></i>Quant &amp; markets</span>
+    </div>
+    <p class="url"><b>→</b> dongzhaohe321418-lab.github.io</p>
+  </div>
+  <div style="align-self:center">
+    <div class="card">
+      <div class="head"><span>Fig. 0 · Sort-match</span><span>¹³C · ethyl benzoate</span></div>
+      <div class="plot">{{SVG}}</div>
+      <div class="foot"><span>MAE <b>{{MAE}}</b> ppm</span><span>best of 5,040 <b>{{BEST}}</b> <span class="ok">✓</span></span></div>
+    </div>
+    <p class="cap">Sorting is the optimal assignment. The lines never cross.</p>
+  </div>
+</div></body></html>
