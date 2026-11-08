@@ -2,8 +2,10 @@
 
 Personal site of Zhaohe (Eric) Dong — https://dongzhaohe321418-lab.github.io/
 
-A single static page (`index.html`, no build step, no dependencies beyond Google Fonts).
+A single static page (`index.html` plus `img/`), no build step, no dependencies beyond Google Fonts.
 Edit `site.html`, then run `./build.sh` to regenerate `index.html`.
 
-- Bilingual (English / 中文), light and dark themes
+- Organised by thread: auditing LMs · chemistry & materials ML · tools & teaching · markets & quant research
+- Light and dark themes
 - Hero figure: a live sort-match mirror plot (¹³C peaks of ethyl benzoate) with a brute-force check over all 5,040 pairings
+- The Tubby Quant screenshot (`img/tubby-console.jpg`) is from the public tubby-labs-research/tubby-quant repo and shows synthetic data

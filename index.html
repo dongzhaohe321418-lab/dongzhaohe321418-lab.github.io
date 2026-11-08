@@ -14,7 +14,7 @@
 :root{
   --paper:#F1F2EE; --paper-2:#E8EAE4; --ink:#14171C; --muted:#5A626C; --rule:#D2D5CE;
   --accent:#2340C4; --hi:#E5B30F; --pass:#1D7A4B; --warn:#B4541B;
-  --t1:#2340C4; --t2:#A47700; --t3:#B3305F;
+  --t1:#2340C4; --t2:#A47700; --t3:#B3305F; --t4:#0B7A83;
   --display:"Bricolage Grotesque","PingFang SC","Hiragino Sans GB","Noto Sans SC",system-ui,sans-serif;
   --serif:"Newsreader","Songti SC","Noto Serif SC",Georgia,"Times New Roman",serif;
   --mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;
@@ -25,13 +25,13 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --paper:#0E1114; --paper-2:#161A1F; --ink:#E6E8E3; --muted:#959DA7; --rule:#2A3037;
   --accent:#93A6FF; --hi:#F1C94A; --pass:#5DC28D; --warn:#E9925A;
-  --t1:#93A6FF; --t2:#F1C94A; --t3:#F07AA0; color-scheme:dark}}
+  --t1:#93A6FF; --t2:#F1C94A; --t3:#F07AA0; --t4:#4FD1C5; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0E1114; --paper-2:#161A1F; --ink:#E6E8E3; --muted:#959DA7; --rule:#2A3037;
   --accent:#93A6FF; --hi:#F1C94A; --pass:#5DC28D; --warn:#E9925A;
-  --t1:#93A6FF; --t2:#F1C94A; --t3:#F07AA0; color-scheme:dark}
+  --t1:#93A6FF; --t2:#F1C94A; --t3:#F07AA0; --t4:#4FD1C5; color-scheme:dark}
 :root[data-theme="light"]{color-scheme:light}
-.th1{--tc:var(--t1)} .th2{--tc:var(--t2)} .th3{--tc:var(--t3)}
+.th1{--tc:var(--t1)} .th2{--tc:var(--t2)} .th3{--tc:var(--t3)} .th4{--tc:var(--t4)}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:76px}
@@ -83,7 +83,6 @@ p{margin:0}
 @keyframes breathe{50%{box-shadow:0 0 0 7px color-mix(in oklab,var(--pass) 6%,transparent)}}
 .name{font-weight:800;font-size:clamp(58px,9.4vw,124px);line-height:.88;letter-spacing:-.045em;font-variation-settings:"opsz" 96}
 .name .alt{display:block;font-weight:400;font-size:.36em;letter-spacing:-.02em;color:var(--muted);margin-top:.28em;font-family:var(--serif);font-style:italic}
-:root[lang="zh"] .name .alt{font-style:normal}
 .lede{font-size:clamp(19px,1.6vw,22px);line-height:1.5;max-width:31em;margin-top:30px}
 .lede mark{background:linear-gradient(transparent 58%,var(--hi-soft) 58%);color:inherit;padding:0 .08em}
 .facts{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:34px;padding-top:20px;border-top:1px solid var(--rule)}
@@ -109,12 +108,14 @@ p{margin:0}
 
 /* thread map (contents) */
 .mapsec{padding-block:0 clamp(48px,7vw,88px)}
-.map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
-@media (max-width:860px){.map{grid-template-columns:1fr}}
-.thread{display:flex;flex-direction:column;gap:12px;padding:24px 24px 26px;border-left:1px solid var(--rule);text-decoration:none;min-width:0;position:relative;transition:background .25s}
+.map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+@media (max-width:1000px){.map{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.map{grid-template-columns:1fr}}
+.thread{display:flex;flex-direction:column;gap:12px;padding:24px 20px 26px;border-left:1px solid var(--rule);text-decoration:none;min-width:0;position:relative;transition:background .25s}
 .thread:first-child{border-left:0;padding-left:0}
 .thread:last-child{padding-right:0}
-@media (max-width:860px){.thread,.thread:first-child,.thread:last-child{border-left:0;border-top:1px solid var(--rule);padding:22px 0}.thread:first-child{border-top:0}}
+@media (max-width:1000px) and (min-width:601px){.thread:nth-child(odd){border-left:0;padding-left:0}.thread:nth-child(even){padding-right:20px}.thread:nth-child(n+3){border-top:1px solid var(--rule)}.thread:nth-child(2n){padding-right:0}}
+@media (max-width:600px){.thread,.thread:first-child,.thread:last-child{border-left:0;border-top:1px solid var(--rule);padding:22px 0}.thread:first-child{border-top:0}}
 .thread .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .thread .no{font:500 13px var(--mono);color:var(--tc);display:inline-flex;align-items:center;gap:8px}
 .thread .go{font-family:var(--mono);color:var(--muted);transition:transform .25s,color .2s}
@@ -163,15 +164,15 @@ section.s{padding-block:clamp(56px,8vw,104px);border-top:1px solid var(--rule)}
 
 /* software rows */
 .sws{border-top:1px solid var(--rule)}
-.sw{display:grid;grid-template-columns:140px minmax(0,1fr) 190px 24px;gap:20px;align-items:baseline;padding-block:20px;border-bottom:1px solid var(--rule);text-decoration:none;transition:background .2s}
+.sw{display:grid;grid-template-columns:140px minmax(0,1fr) 190px 64px;gap:20px;align-items:baseline;padding-block:20px;border-bottom:1px solid var(--rule);text-decoration:none;transition:background .2s}
 .sw .when{font:12px var(--mono);color:var(--muted)}
-.sw h4{font-size:20px;letter-spacing:-.015em;transition:color .2s}
+.sw h4{font-size:20px;line-height:1.25;letter-spacing:-.015em;transition:color .2s}
 .sw p{font-size:16.5px;line-height:1.5;margin-top:4px;color:color-mix(in oklab,var(--ink) 80%,var(--paper))}
 .sw .meta{display:flex;flex-direction:column;gap:4px;font:12px var(--mono);color:var(--muted)}
 .sw .arrow{font-family:var(--mono);color:var(--muted);transition:transform .25s,color .2s;text-align:right}
 .sw:hover h4,.sw:hover .arrow{color:var(--tc)}
 .sw:hover .arrow{transform:translate(3px,-3px)}
-@media (max-width:900px){.sw{grid-template-columns:minmax(0,1fr) 24px;gap:6px 14px}.sw .when{grid-column:1}.sw .meta{flex-direction:row;flex-wrap:wrap;gap:4px 14px;grid-column:1}.sw .arrow{grid-column:2;grid-row:1}}
+@media (max-width:900px){.sw{grid-template-columns:minmax(0,1fr) auto;gap:6px 14px}.sw .when{grid-column:1}.sw .meta{flex-direction:row;flex-wrap:wrap;gap:4px 14px;grid-column:1}.sw .arrow{grid-column:2;grid-row:1}}
 .lang{display:inline-flex;align-items:center;gap:6px}
 .lang::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c,#999)}
 
@@ -240,6 +241,21 @@ section.s{padding-block:clamp(56px,8vw,104px);border-top:1px solid var(--rule)}
 .toc li .c{font:11.5px var(--mono);color:var(--muted);white-space:nowrap}
 .book .links{margin-top:auto;padding-top:4px}
 
+/* tubby labs */
+.org{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(28px,4vw,56px);align-items:start}
+@media (max-width:900px){.org{grid-template-columns:1fr}}
+.org .ca-lede+p{margin-top:16px;color:color-mix(in oklab,var(--ink) 80%,var(--paper))}
+.shot{margin:0}
+.shot img{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--rule);background:var(--paper-2)}
+.shot figcaption{font-size:14.5px;line-height:1.5;color:var(--muted);margin-top:10px}
+.th4 .flow .step .k{color:var(--tc)}
+.th4 .step.seal{background:color-mix(in oklab,var(--tc) 12%,transparent)}
+.sw.priv{cursor:default}
+.sw .tag{font:11px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:right;white-space:nowrap}
+.sw.priv:hover h4{color:inherit}
+@media (max-width:900px){.sw .tag{grid-column:2;grid-row:1}.sw>div:first-of-type{grid-column:1 / -1}}
+.disc{font:12.5px/1.5 var(--mono);color:var(--muted);margin-top:16px}
+
 /* timeline */
 .tl{border-top:1px solid var(--ink)}
 .month{display:grid;grid-template-columns:140px minmax(0,1fr);gap:20px;border-bottom:1px solid var(--rule);padding-block:16px}
@@ -272,7 +288,6 @@ section.s{padding-block:clamp(56px,8vw,104px);border-top:1px solid var(--rule)}
 .rule{padding:22px 22px 24px 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:12px;justify-content:space-between}
 .rule p{font:400 clamp(18px,1.6vw,21px)/1.38 var(--serif);font-style:italic}
 .rule p::before{content:"“";color:var(--accent)} .rule p::after{content:"”";color:var(--accent)}
-:root[lang="zh"] .rule p{font-style:normal}
 footer{border-top:1px solid var(--rule);padding-block:28px 40px}
 footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 24px}
 
@@ -288,14 +303,14 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 
   <div class="wrap">
     <a class="mark" href="#top">Z. Dong<span>.</span></a>
     <nav class="nav" aria-label="Sections">
-      <a href="#audit" class="th1"><span class="tdot"></span><b>§1</b><span data-i18n="n1">Audit</span></a>
-      <a href="#materials" class="th2"><span class="tdot"></span><b>§2</b><span data-i18n="n2">Materials ML</span></a>
-      <a href="#teaching" class="th3"><span class="tdot"></span><b>§3</b><span data-i18n="n3">Tools &amp; teaching</span></a>
-      <a href="#timeline"><b>§4</b><span data-i18n="n4">Timeline</span></a>
-      <a href="#about"><b>§5</b><span data-i18n="n5">About</span></a>
+      <a href="#audit" class="th1"><span class="tdot"></span><b>§1</b><span>Audit</span></a>
+      <a href="#materials" class="th2"><span class="tdot"></span><b>§2</b><span>Materials ML</span></a>
+      <a href="#teaching" class="th3"><span class="tdot"></span><b>§3</b><span>Tools &amp; teaching</span></a>
+      <a href="#markets" class="th4"><span class="tdot"></span><b>§4</b><span>Markets</span></a>
+      <a href="#timeline"><b>§5</b><span>Timeline</span></a>
+      <a href="#about"><b>§6</b><span>About</span></a>
     </nav>
     <div class="tools">
-      <button class="tbtn" id="langBtn" type="button" aria-label="Switch language">中文</button>
       <button class="tbtn" id="themeBtn" type="button" aria-label="Switch colour theme">◐</button>
     </div>
   </div>
@@ -308,38 +323,38 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 
     <div class="rv">
       <div class="eyebrow">
         <span class="dot" aria-hidden="true"></span>
-        <span class="label" data-i18n="eyebrow">Cambridge · ML × chemistry &amp; materials × audited AI</span>
+        <span class="label">Cambridge · co-founder, Tubby Labs · ML for science × audited AI</span>
       </div>
-      <h1 class="name">Zhaohe Dong<span class="alt" data-i18n="alt">Eric, to most people</span></h1>
-      <p class="lede" data-i18n="lede">I am an undergraduate building machine learning for chemistry and materials, and the audit machinery that lets <mark>AI-written science be checked, number by number.</mark></p>
+      <h1 class="name">Zhaohe Dong<span class="alt">Machine learning for science, built to be checked.</span></h1>
+      <p class="lede">I am an undergraduate building machine learning for chemistry and materials, and the audit machinery that lets <mark>AI-written science be checked, number by number.</mark> I also co-founded Tubby Labs, a quantitative research team.</p>
       <div class="facts">
-        <div class="fact"><strong>5</strong><span data-i18n="f0">papers &amp; preprints</span></div>
-        <div class="fact"><strong>3,866</strong><span data-i18n="f1">contributions, past year</span></div>
-        <div class="fact"><strong>36</strong><span data-i18n="f2">repositories</span></div>
+        <div class="fact"><strong>5</strong><span>papers &amp; preprints</span></div>
+        <div class="fact"><strong>3,866</strong><span>contributions, past year</span></div>
+        <div class="fact"><strong>36</strong><span>repositories</span></div>
       </div>
       <div class="ctas">
         <a class="btn solid" href="https://github.com/dongzhaohe321418-lab" target="_blank" rel="noopener">
           <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
           GitHub
         </a>
-        <a class="btn" href="#map" data-i18n="cta2">See the work ↓</a>
+        <a class="btn" href="#map">See the work ↓</a>
       </div>
     </div>
 
     <figure class="rv" style="margin:0">
       <div class="inst">
         <div class="inst-head">
-          <span class="label" data-i18n="instL">Fig. 0 · Sort-match, live</span>
+          <span class="label">Fig. 0 · Sort-match, live</span>
           <span class="label">¹³C · CDCl₃ · ethyl benzoate</span>
         </div>
         <canvas id="spec" aria-label="Animated mirror plot: seven observed carbon-13 NMR peaks of ethyl benzoate above, a model's predicted shifts below, joined in sorted order while the predictions train toward the peaks."></canvas>
         <div class="inst-foot mono">
           <span><span class="label" style="margin-right:6px">MAE</span><span class="val" id="mae">—</span> ppm</span>
-          <span><span class="label" style="margin-right:6px" data-i18n="stepL">step</span><span class="val" id="stepN">0</span></span>
-          <span title="Minimum over every possible pairing, computed by brute force"><span class="label" style="margin-right:6px" data-i18n="crossL">best of 5,040</span><span class="val" id="opt">—</span> <span class="ok" id="optOk">✓</span></span>
+          <span><span class="label" style="margin-right:6px">step</span><span class="val" id="stepN">0</span></span>
+          <span title="Minimum over every possible pairing, computed by brute force"><span class="label" style="margin-right:6px">best of 5,040</span><span class="val" id="opt">—</span> <span class="ok" id="optOk">✓</span></span>
         </div>
       </div>
-      <figcaption class="cap" data-i18n="cap"><b>FIG. 0</b>Observed peaks (top) carry no atom labels. Pairing predictions with peaks in sorted order is the optimal assignment for any convex cost, so a model can learn from bare peak lists with two <code class="mono">torch.sort</code> calls. Drag a predicted peak: the pairing re-sorts, the lines never cross, and the brute-force search over all 5,040 pairings agrees.</figcaption>
+      <figcaption class="cap"><b>FIG. 0</b>Observed peaks (top) carry no atom labels. Pairing predictions with peaks in sorted order is the optimal assignment for any convex cost, so a model can learn from bare peak lists with two <code class="mono">torch.sort</code> calls. Drag a predicted peak: the pairing re-sorts, the lines never cross, and the brute-force search over all 5,040 pairings agrees.</figcaption>
     </figure>
   </div>
 </section>
@@ -349,21 +364,27 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 
     <nav class="map rv" aria-label="Research threads">
       <a class="thread th1" href="#audit">
         <div class="top"><span class="no"><span class="tdot"></span>§1</span><span class="go">↓</span></div>
-        <h3 data-i18n="m1h">Auditing &amp; measuring language models</h3>
-        <p data-i18n="m1p">A harness where a second vendor reviews AI-generated work, and studies of what it catches.</p>
+        <h3>Auditing &amp; measuring language models</h3>
+        <p>A harness where a second vendor reviews AI-generated work, and studies of what it catches.</p>
         <ul><li>CrossAudit</li><li>Audit ceiling</li><li>Content or Context</li><li>Evidence Lab</li></ul>
       </a>
       <a class="thread th2" href="#materials">
         <div class="top"><span class="no"><span class="tdot"></span>§2</span><span class="go">↓</span></div>
-        <h3 data-i18n="m2h">Machine learning for chemistry &amp; materials</h3>
-        <p data-i18n="m2p">Learning from unassigned spectra and diffraction peaks; simulation that never blurs its level of theory.</p>
+        <h3>Machine learning for chemistry &amp; materials</h3>
+        <p>Learning from unassigned spectra and diffraction peaks; simulation that never blurs its level of theory.</p>
         <ul><li>NMR-SSL</li><li>XRD-SSL</li><li>Jev Hamiltonian</li><li>Perovskites</li><li>matsci-env</li></ul>
       </a>
       <a class="thread th3" href="#teaching">
         <div class="top"><span class="no"><span class="tdot"></span>§3</span><span class="go">↓</span></div>
-        <h3 data-i18n="m3h">Open tools &amp; teaching</h3>
-        <p data-i18n="m3p">Two open handbooks, and instruments for the bench, the literature and the lab budget.</p>
-        <ul><li data-i18n="m3a">2 handbooks</li><li>Figure Studio</li><li>LabScope</li><li>Eye Lab</li><li>CSI300</li></ul>
+        <h3>Open tools &amp; teaching</h3>
+        <p>Two open handbooks, and instruments for the bench, the literature search and the lab budget.</p>
+        <ul><li>2 handbooks</li><li>Figure Studio</li><li>LabScope</li><li>Eye Lab</li></ul>
+      </a>
+      <a class="thread th4" href="#markets">
+        <div class="top"><span class="no"><span class="tdot"></span>§4</span><span class="go">↓</span></div>
+        <h3>Markets &amp; quantitative research</h3>
+        <p>Co-founder of Tubby Labs, and an investor in private and public markets.</p>
+        <ul><li>Tubby Labs</li><li>Tubby Quant</li><li>Pre-IPO</li><li>Options</li><li>Multi-factor</li></ul>
       </a>
     </nav>
   </div>
@@ -374,85 +395,85 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 
   <div class="wrap">
     <div class="shead rv">
       <span class="sno"><span class="tdot"></span>§1</span>
-      <h2 data-i18n="m1h">Auditing &amp; measuring language models</h2>
-      <p data-i18n="s1p">When a model writes code, results or a paper, who checks it, and how would you know the check was enough? I build the harness, then measure what it catches.</p>
+      <h2>Auditing &amp; measuring language models</h2>
+      <p>When a model writes code, results or a paper, who checks it, and how would you know the check was enough? I build the harness, then measure what it catches.</p>
     </div>
 
-    <div class="sub rv"><h3>CrossAudit</h3><span data-i18n="caSub">flagship · macOS app + CLI · MIT</span></div>
+    <div class="sub rv"><h3>CrossAudit</h3><span>flagship · macOS app + CLI · MIT</span></div>
     <div class="ca">
       <div class="rv">
-        <p class="ca-lede" data-i18n="caLede">One model builds. A model from a different vendor reviews the committed result. Deterministic checks run first, and every task, finding, verdict and receipt is recorded in Git. Same-vendor pairs are refused by the harness, not by a prompt.</p>
-        <p class="quote" data-i18n="caQ">The separation buys <em>severity</em>, not sight.</p>
-        <p class="label quote-src" data-i18n="caQs">From the CrossAudit README, after measuring it</p>
+        <p class="ca-lede">One model builds. A model from a different vendor reviews the committed result. Deterministic checks run first, and every task, finding, verdict and receipt is recorded in Git. Same-vendor pairs are refused by the harness, not by a prompt.</p>
+        <p class="quote">The separation buys <em>severity</em>, not sight.</p>
+        <p class="label quote-src">From the CrossAudit README, after measuring it</p>
         <div class="chips"><span class="chip">v4.17.0</span><span class="chip">macOS 13+</span><span class="chip">Python 3.10+</span><span class="chip">MIT</span></div>
         <div class="links" style="margin-top:22px">
-          <a href="https://github.com/dongzhaohe321418-lab/crossaudit-harness" target="_blank" rel="noopener" data-i18n="lHarness">Harness ↗</a>
-          <a href="https://github.com/dongzhaohe321418-lab/crossaudit-harness/releases/latest" target="_blank" rel="noopener" data-i18n="lRel">Latest release ↗</a>
+          <a href="https://github.com/dongzhaohe321418-lab/crossaudit-harness" target="_blank" rel="noopener">Harness ↗</a>
+          <a href="https://github.com/dongzhaohe321418-lab/crossaudit-harness/releases/latest" target="_blank" rel="noopener">Latest release ↗</a>
         </div>
       </div>
       <div class="chart rv" id="chart">
-        <h4 data-i18n="chT">Self-review against a stranger</h4>
-        <p class="label" data-i18n="chS">30-instance study · share of increments</p>
+        <h4>Self-review against a stranger</h4>
+        <p class="label">30-instance study · share of increments</p>
         <div class="metric">
-          <p class="mono" style="font-weight:500" data-i18n="cm1">Blocked</p>
-          <div class="row"><span class="who" data-i18n="self">Same model</span><div class="track"><i data-w="3.3"></i></div><span class="pct">3.3%</span></div>
-          <div class="row"><span class="who" data-i18n="other">Other vendor</span><div class="track"><i class="x" data-w="80"></i></div><span class="pct">80.0%</span></div>
+          <p class="mono" style="font-weight:500">Blocked</p>
+          <div class="row"><span class="who">Same model</span><div class="track"><i data-w="3.3"></i></div><span class="pct">3.3%</span></div>
+          <div class="row"><span class="who">Other vendor</span><div class="track"><i class="x" data-w="80"></i></div><span class="pct">80.0%</span></div>
         </div>
         <div class="metric">
-          <p class="mono" style="font-weight:500" data-i18n="cm2">Defects named</p>
-          <div class="row"><span class="who" data-i18n="self">Same model</span><div class="track"><i data-w="31.7"></i></div><span class="pct">31.7%</span></div>
-          <div class="row"><span class="who" data-i18n="other">Other vendor</span><div class="track"><i class="x" data-w="19.8"></i></div><span class="pct">19.8%</span></div>
+          <p class="mono" style="font-weight:500">Defects named</p>
+          <div class="row"><span class="who">Same model</span><div class="track"><i data-w="31.7"></i></div><span class="pct">31.7%</span></div>
+          <div class="row"><span class="who">Other vendor</span><div class="track"><i class="x" data-w="19.8"></i></div><span class="pct">19.8%</span></div>
         </div>
         <div class="axis" aria-hidden="true"><span></span><div><span>0</span><span>25</span><span>50</span><span>75</span><span>100%</span></div><span></span></div>
-        <p class="note" data-i18n="chN">The model reviewing its own work saw more defects and filed 61 of its 64 findings as advisory. One task, one vendor pair; the corrections are published with the benchmarks.</p>
+        <p class="note">The model reviewing its own work saw more defects and filed 61 of its 64 findings as advisory. One task, one vendor pair; the corrections are published with the benchmarks.</p>
       </div>
     </div>
 
     <div class="flow rv" aria-label="One CrossAudit round">
-      <div class="step"><span class="k">01</span><h5 data-i18n="st1">Generator</h5><p data-i18n="st1p">Vendor A writes the deliverable and commits it.</p></div>
-      <div class="step"><span class="k">02</span><h5 data-i18n="st2">Checks</h5><p data-i18n="st2p">Path, schema, unit, convergence and provenance checks run before any model opinion.</p></div>
-      <div class="step"><span class="k">03</span><h5 data-i18n="st3">Auditor</h5><p data-i18n="st3p">Vendor B reads only the committed files and returns tiered findings.</p></div>
-      <div class="step"><span class="k">04</span><h5 data-i18n="st4">Verdict</h5><div class="verdicts"><span class="v p" data-i18n="vp">Passed</span><span class="v c" data-i18n="vc">Needs changes</span><span class="v y" data-i18n="vy">Needs you</span></div></div>
-      <div class="step seal"><span class="k">05</span><h5 data-i18n="st5">Receipt</h5><p data-i18n="st5p">Bound to the verdict, rules, commit and evidence; sealed in Git.</p><p class="hash">sha256 · hash-chained ledger</p></div>
+      <div class="step"><span class="k">01</span><h5>Generator</h5><p>Vendor A writes the deliverable and commits it.</p></div>
+      <div class="step"><span class="k">02</span><h5>Checks</h5><p>Path, schema, unit, convergence and provenance checks run before any model opinion.</p></div>
+      <div class="step"><span class="k">03</span><h5>Auditor</h5><p>Vendor B reads only the committed files and returns tiered findings.</p></div>
+      <div class="step"><span class="k">04</span><h5>Verdict</h5><div class="verdicts"><span class="v p">Passed</span><span class="v c">Needs changes</span><span class="v y">Needs you</span></div></div>
+      <div class="step seal"><span class="k">05</span><h5>Receipt</h5><p>Bound to the verdict, rules, commit and evidence; sealed in Git.</p><p class="hash">sha256 · hash-chained ledger</p></div>
     </div>
 
-    <div class="sub rv"><h3 data-i18n="lin">Lineage</h3><span data-i18n="linS">five versions in five weeks</span></div>
+    <div class="sub rv"><h3>Lineage</h3><span>five versions in five weeks</span></div>
     <div class="lin rv">
-      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit" target="_blank" rel="noopener"><span class="d">30 Jul</span><b>crossaudit</b><span data-i18n="l1">First generate-then-audit loop</span></a>
-      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit_v2" target="_blank" rel="noopener"><span class="d">01 Aug</span><b>v2</b><span data-i18n="l2">Two adversarial agents, one replayable ledger</span></a>
-      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit_v4" target="_blank" rel="noopener"><span class="d">03 Aug</span><b>v4</b><span data-i18n="l3">Verifiable receipts in Git</span></a>
-      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit-app" target="_blank" rel="noopener"><span class="d">15 Aug</span><b>crossaudit-app</b><span data-i18n="l4">Local-first macOS app and site</span></a>
-      <a class="node now" href="https://github.com/dongzhaohe321418-lab/crossaudit-harness" target="_blank" rel="noopener"><span class="d">03 Sep →</span><b>harness 4.17</b><span data-i18n="l5">Current: deterministic checks before any model opinion</span></a>
+      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit" target="_blank" rel="noopener"><span class="d">30 Jul</span><b>crossaudit</b><span>First generate-then-audit loop</span></a>
+      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit_v2" target="_blank" rel="noopener"><span class="d">01 Aug</span><b>v2</b><span>Two adversarial agents, one replayable ledger</span></a>
+      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit_v4" target="_blank" rel="noopener"><span class="d">03 Aug</span><b>v4</b><span>Verifiable receipts in Git</span></a>
+      <a class="node" href="https://github.com/dongzhaohe321418-lab/crossaudit-app" target="_blank" rel="noopener"><span class="d">15 Aug</span><b>crossaudit-app</b><span>Local-first macOS app and site</span></a>
+      <a class="node now" href="https://github.com/dongzhaohe321418-lab/crossaudit-harness" target="_blank" rel="noopener"><span class="d">03 Sep →</span><b>harness 4.17</b><span>Current: deterministic checks before any model opinion</span></a>
     </div>
 
-    <div class="sub rv"><h3 data-i18n="pap">Papers</h3><span>2</span></div>
+    <div class="sub rv"><h3>Papers</h3><span>2</span></div>
     <div class="papers">
       <article class="paper rv">
         <div class="p-meta"><span class="status live">arXiv</span><span class="mono">Sep 2026 · cs.SE · cs.LG · cs.AI</span></div>
         <div>
           <h4>What Moves the Ceiling on Automated Audit: from General Code to Scientific Code, Results and Data</h4>
-          <p class="find" data-i18n="p1">CrossAudit's arrangement measured against ground truth. The flag rate belongs to a configuration, not to the auditor: route, one rulebook sentence and the counting rule each move it. Three preregistered studies extend it to scientific code, results and data.</p>
-          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/audit-ceiling-paper" target="_blank" rel="noopener" data-i18n="lRepo">Records &amp; reviews ↗</a></div>
+          <p class="find">CrossAudit's arrangement measured against ground truth. The flag rate belongs to a configuration, not to the auditor: route, one rulebook sentence and the counting rule each move it. Three preregistered studies extend it to scientific code, results and data.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/audit-ceiling-paper" target="_blank" rel="noopener">Records &amp; reviews ↗</a></div>
         </div>
-        <div class="num"><strong>30.0% <span class="ci">[20.0, 40.7]</span></strong><span data-i18n="p1n">of defective programs that pass their visible tests, flagged by at least one of eight readings</span></div>
+        <div class="num"><strong>30.0% <span class="ci">[20.0, 40.7]</span></strong><span>of defective programs that pass their visible tests, flagged by at least one of eight readings</span></div>
       </article>
       <article class="paper rv">
-        <div class="p-meta"><span class="status" data-i18n="pre">Preprint</span><span class="mono">Nov 2026 · cs.CL · cs.LG</span></div>
+        <div class="p-meta"><span class="status">Preprint</span><span class="mono">Nov 2026 · cs.CL · cs.LG</span></div>
         <div>
           <h4>Content or Context? Measuring Latent Communication Between Language Models</h4>
-          <p class="find" data-i18n="p2">A sender model passes hidden states through a learned bridge to a receiver that reads only the suffix. Donor messages split the gain into generic, article-level and window-specific parts.</p>
-          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/content-or-context" target="_blank" rel="noopener" data-i18n="lCode">Code &amp; paper ↗</a></div>
+          <p class="find">A sender model passes hidden states through a learned bridge to a receiver that reads only the suffix. Donor messages split the gain into generic, article-level and window-specific parts.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/content-or-context" target="_blank" rel="noopener">Code &amp; paper ↗</a></div>
         </div>
-        <div class="num"><strong>82% <span class="ci">[79, 85]</span></strong><span data-i18n="p2n">of the content gain recovered by bridges fitted only on LLM-written text (Pythia 70M → 160M)</span></div>
+        <div class="num"><strong>82% <span class="ci">[79, 85]</span></strong><span>of the content gain recovered by bridges fitted only on LLM-written text (Pythia 70M → 160M)</span></div>
       </article>
     </div>
 
-    <div class="sub rv"><h3 data-i18n="sof">Software</h3><span>1</span></div>
+    <div class="sub rv"><h3>Software</h3><span>1</span></div>
     <div class="sws">
       <a class="sw rv" href="https://github.com/dongzhaohe321418-lab/crossaudit_evidence_lab" target="_blank" rel="noopener">
         <span class="when">Sep 2026</span>
-        <div><h4>CrossAudit Evidence Lab</h4><p data-i18n="w1">A tool-first audit engine: models propose findings, and a hard block needs a registered verifier to reproduce one. Tests whether switching vendors is enough for independent review.</p></div>
-        <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span data-i18n="w1m">research alpha · 0 deps</span></div>
+        <div><h4>CrossAudit Evidence Lab</h4><p>A tool-first audit engine: models propose findings, and a hard block needs a registered verifier to reproduce one. Tests whether switching vendors is enough for independent review.</p></div>
+        <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span>research alpha · 0 deps</span></div>
         <span class="arrow">↗</span>
       </a>
     </div>
@@ -464,52 +485,52 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 
   <div class="wrap">
     <div class="shead rv">
       <span class="sno"><span class="tdot"></span>§2</span>
-      <h2 data-i18n="m2h">Machine learning for chemistry &amp; materials</h2>
-      <p data-i18n="s2p">Learning from the data chemists actually have: unassigned spectra, diffraction peaks, and simulations whose level of theory is never blurred.</p>
+      <h2>Machine learning for chemistry &amp; materials</h2>
+      <p>Learning from the data chemists actually have: unassigned spectra, diffraction peaks, and simulations whose level of theory is never blurred.</p>
     </div>
 
-    <div class="sub rv"><h3 data-i18n="pap">Papers</h3><span>3</span></div>
+    <div class="sub rv"><h3>Papers</h3><span>3</span></div>
     <div class="papers">
       <article class="paper rv">
         <div class="p-meta"><span class="status live">arXiv</span><span class="mono">2601.18524 · NMR · GNN</span></div>
         <div>
           <h4>Sort-match self-supervision for NMR chemical shift prediction</h4>
-          <p class="find" data-i18n="p4">Optimal matching between predicted shifts and unassigned peaks reduces exactly to sorting under any convex per-atom cost, so a model can train on literature peak lists with no atom labels. Extended to 2-D HSQC with a sliced-Wasserstein loss. Fig. 0 above is this result.</p>
-          <div class="links"><a href="https://arxiv.org/abs/2601.18524" target="_blank" rel="noopener">arXiv ↗</a><a href="https://github.com/dongzhaohe321418-lab/nmr-ssl" target="_blank" rel="noopener" data-i18n="lCodeOnly">Code ↗</a></div>
+          <p class="find">Optimal matching between predicted shifts and unassigned peaks reduces exactly to sorting under any convex per-atom cost, so a model can train on literature peak lists with no atom labels. Extended to 2-D HSQC with a sliced-Wasserstein loss. Fig. 0 above is this result.</p>
+          <div class="links"><a href="https://arxiv.org/abs/2601.18524" target="_blank" rel="noopener">arXiv ↗</a><a href="https://github.com/dongzhaohe321418-lab/nmr-ssl" target="_blank" rel="noopener">Code ↗</a></div>
         </div>
-        <div class="num"><strong>3.57 <span class="ci">ppm</span></strong><span data-i18n="p4n">test MAE with 10% labels, against 4.09 ppm supervised. Same model, same data.</span></div>
+        <div class="num"><strong>3.57 <span class="ci">ppm</span></strong><span>test MAE with 10% labels, against 4.09 ppm supervised. Same model, same data.</span></div>
       </article>
       <article class="paper rv">
-        <div class="p-meta"><span class="status" data-i18n="prep">In preparation</span><span class="mono">XRD · crystals</span></div>
+        <div class="p-meta"><span class="status">In preparation</span><span class="mono">XRD · crystals</span></div>
         <div>
           <h4>Sort-match self-supervision for powder XRD peak prediction</h4>
-          <p class="find" data-i18n="p5">The same theorem carries over to diffraction, predicting peak positions from 5,000 Materials Project structures. Intensities are not learned at this scale, and the write-up says so.</p>
-          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/xrd-ssl" target="_blank" rel="noopener" data-i18n="lCodeOnly">Code ↗</a></div>
+          <p class="find">The same theorem carries over to diffraction, predicting peak positions from 5,000 Materials Project structures. Intensities are not learned at this scale, and the write-up says so.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/xrd-ssl" target="_blank" rel="noopener">Code ↗</a></div>
         </div>
-        <div class="num"><strong>4.09° <span class="ci">± 0.31</span></strong><span data-i18n="p5n">2θ MAE with 10% of labels, matching full supervision (4.13° ± 0.23)</span></div>
+        <div class="num"><strong>4.09° <span class="ci">± 0.31</span></strong><span>2θ MAE with 10% of labels, matching full supervision (4.13° ± 0.23)</span></div>
       </article>
       <article class="paper rv">
-        <div class="p-meta"><span class="status" data-i18n="pre">Preprint</span><span class="mono">Sep 2026 · cs.LG · physics.chem-ph · quant-ph</span></div>
+        <div class="p-meta"><span class="status">Preprint</span><span class="mono">Sep 2026 · cs.LG · physics.chem-ph · quant-ph</span></div>
         <div>
           <h4>Is there a Hamiltonian inside a decision model?</h4>
-          <p class="find" data-i18n="p3">Reading a decision model's calibrated probabilities as local energies, E = −log p, and testing them on quantum-chemistry decisions against PySCF ground truth. The landscape is approximately but measurably incoherent, and most of the signal comes from a stretch factor stated in the prompt.</p>
-          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/jev-hamiltonian" target="_blank" rel="noopener" data-i18n="lCode">Code &amp; paper ↗</a></div>
+          <p class="find">Reading a decision model's calibrated probabilities as local energies, E = −log p, and testing them on quantum-chemistry decisions against PySCF ground truth. The landscape is approximately but measurably incoherent, and most of the signal comes from a stretch factor stated in the prompt.</p>
+          <div class="links"><a href="https://github.com/dongzhaohe321418-lab/jev-hamiltonian" target="_blank" rel="noopener">Code &amp; paper ↗</a></div>
         </div>
-        <div class="num"><strong>10,145</strong><span data-i18n="p3n">distinct API calls, all cached and replayable offline, for about US$0.28</span></div>
+        <div class="num"><strong>10,145</strong><span>distinct API calls, all cached and replayable offline, for about US$0.28</span></div>
       </article>
     </div>
 
-    <div class="sub rv"><h3 data-i18n="sof2">Studies &amp; software</h3><span>2</span></div>
+    <div class="sub rv"><h3>Studies &amp; software</h3><span>2</span></div>
     <div class="sws">
       <a class="sw rv" href="https://github.com/dongzhaohe321418-lab/perovskite-screening" target="_blank" rel="noopener">
         <span class="when">Jul 2026 →</span>
-        <div><h4 data-i18n="w2h">Perovskite screening</h4><p data-i18n="w2">Iodine-vacancy migration in γ-CsPbI<sub>3</sub> and FA perovskites. GA⁺ and Sr²⁺ additives screened with MACE across 108 paths and 36 hosts: both practically equivalent to no effect. Charge-state barriers gated behind DFT.</p></div>
+        <div><h4>Perovskite screening</h4><p>Iodine-vacancy migration in γ-CsPbI<sub>3</sub> and FA perovskites. GA⁺ and Sr²⁺ additives screened with MACE across 108 paths and 36 hosts: both practically equivalent to no effect. Charge-state barriers gated behind DFT.</p></div>
         <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span>MACE · PBE+D3(BJ)</span></div>
         <span class="arrow">↗</span>
       </a>
       <a class="sw rv" href="https://github.com/dongzhaohe321418-lab/matsci-env" target="_blank" rel="noopener">
         <span class="when">Jul 2026</span>
-        <div><h4>matsci-env</h4><p data-i18n="w3">A pinned, tested stack for computational materials science: DFT, MACE and other interatomic potentials, MD, workflows and visualisation. Three commands to a working environment.</p></div>
+        <div><h4>matsci-env</h4><p>A pinned, tested stack for computational materials science: DFT, MACE and other interatomic potentials, MD, workflows and visualisation. Three commands to a working environment.</p></div>
         <div class="meta"><span class="lang" style="--c:#89e051">Shell</span><span>GPAW · MACE · ASE</span></div>
         <span class="arrow">↗</span>
       </a>
@@ -522,65 +543,59 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 
   <div class="wrap">
     <div class="shead rv">
       <span class="sno"><span class="tdot"></span>§3</span>
-      <h2 data-i18n="m3h">Open tools &amp; teaching</h2>
-      <p data-i18n="s3p">Handbooks for the student who finds a field hard and no clear way in, and instruments for the bench, the literature search and the procurement form.</p>
+      <h2>Open tools &amp; teaching</h2>
+      <p>Handbooks for the student who finds a field hard and no clear way in, and instruments for the bench, the literature search and the procurement form.</p>
     </div>
 
-    <div class="sub rv"><h3 data-i18n="hb">Handbooks</h3><span>2</span></div>
+    <div class="sub rv"><h3>Handbooks</h3><span>2</span></div>
     <div class="books">
       <article class="book rv">
         <span class="spine" aria-hidden="true"></span>
-        <p class="label" data-i18n="b1l">43 chapters · 10 projects · runs in the browser</p>
-        <h4 data-i18n="b1h">Programming &amp; Computer Systems Handbook</h4>
-        <p data-i18n="b1">From bits and binary to data structures and algorithms, then a from-scratch AI-engineering track. Every Python snippet runs in the browser through Pyodide and is executed in CI on every push.</p>
+        <p class="label">43 chapters · 10 projects · runs in the browser</p>
+        <h4>Programming &amp; Computer Systems Handbook</h4>
+        <p>From bits and binary to data structures and algorithms, then a from-scratch AI-engineering track. Every Python snippet runs in the browser through Pyodide and is executed in CI on every push.</p>
         <ol class="toc">
-          <li><span class="r">I</span><span data-i18n="b1a">The machine</span><span class="c">0–1</span></li>
-          <li><span class="r">II–III</span><span data-i18n="b1b">Programming I and II</span><span class="c">2–22</span></li>
-          <li><span class="r">IV</span><span data-i18n="b1c">Systems &amp; practice</span><span class="c">23–25</span></li>
-          <li><span class="r">V</span><span data-i18n="b1d">AI engineering: tokenizer, attention, KV cache, MCP, RAG, DPO, GRPO</span><span class="c">26–34</span></li>
-          <li><span class="r">VI</span><span data-i18n="b1e">Programming III</span><span class="c">35–42</span></li>
+          <li><span class="r">I</span><span>The machine</span><span class="c">0–1</span></li>
+          <li><span class="r">II–III</span><span>Programming I and II</span><span class="c">2–22</span></li>
+          <li><span class="r">IV</span><span>Systems &amp; practice</span><span class="c">23–25</span></li>
+          <li><span class="r">V</span><span>AI engineering: tokenizer, attention, KV cache, MCP, RAG, DPO, GRPO</span><span class="c">26–34</span></li>
+          <li><span class="r">VI</span><span>Programming III</span><span class="c">35–42</span></li>
         </ol>
-        <div class="links"><a href="https://dongzhaohe321418-lab.github.io/programming-handbook/" target="_blank" rel="noopener" data-i18n="read">Read online ↗</a><a href="https://github.com/dongzhaohe321418-lab/programming-handbook" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+        <div class="links"><a href="https://dongzhaohe321418-lab.github.io/programming-handbook/" target="_blank" rel="noopener">Read online ↗</a><a href="https://github.com/dongzhaohe321418-lab/programming-handbook" target="_blank" rel="noopener">Source ↗</a></div>
       </article>
       <article class="book rv">
         <span class="spine" aria-hidden="true"></span>
-        <p class="label" data-i18n="b2l">Three tiers · five capstones · ★ 4</p>
-        <h4 data-i18n="b2h">Materials Simulation Handbook</h4>
-        <p data-i18n="b2">A self-contained textbook through the core of computational materials science, taking a reader from A-level maths and physics to running foundation-model workflows such as MACE-MP-0.</p>
+        <p class="label">Three tiers · five capstones · ★ 4</p>
+        <h4>Materials Simulation Handbook</h4>
+        <p>A self-contained textbook through the core of computational materials science, taking a reader from A-level maths and physics to running foundation-model workflows such as MACE-MP-0.</p>
         <ol class="toc">
-          <li><span class="r">T0</span><span data-i18n="b2a">Prerequisites: maths, Python, crystals, solid-state physics</span><span class="c">0–3.5</span></li>
-          <li><span class="r">T1</span><span data-i18n="b2b">Core: DFT in Quantum ESPRESSO, MD in LAMMPS, statistical mechanics, MLIPs to MACE, crystal GNNs</span><span class="c">4–10</span></li>
-          <li><span class="r">T2</span><span data-i18n="b2c">Research: active learning, foundation models, multiscale, your own project</span><span class="c">11–14</span></li>
-          <li><span class="r">P1–5</span><span data-i18n="b2d">Capstones: defect energies, MLIP melting point, band-gap screening, MLIP from scratch, Bayesian catalyst search</span><span class="c">6–10 wk</span></li>
+          <li><span class="r">T0</span><span>Prerequisites: maths, Python, crystals, solid-state physics</span><span class="c">0–3.5</span></li>
+          <li><span class="r">T1</span><span>Core: DFT in Quantum ESPRESSO, MD in LAMMPS, statistical mechanics, MLIPs to MACE, crystal GNNs</span><span class="c">4–10</span></li>
+          <li><span class="r">T2</span><span>Research: active learning, foundation models, multiscale, your own project</span><span class="c">11–14</span></li>
+          <li><span class="r">P1–5</span><span>Capstones: defect energies, MLIP melting point, band-gap screening, MLIP from scratch, Bayesian catalyst search</span><span class="c">6–10 wk</span></li>
         </ol>
-        <div class="links"><a href="https://dongzhaohe321418-lab.github.io/materials-simulation-handbook/" target="_blank" rel="noopener" data-i18n="read">Read online ↗</a><a href="https://github.com/dongzhaohe321418-lab/materials-simulation-handbook" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+        <div class="links"><a href="https://dongzhaohe321418-lab.github.io/materials-simulation-handbook/" target="_blank" rel="noopener">Read online ↗</a><a href="https://github.com/dongzhaohe321418-lab/materials-simulation-handbook" target="_blank" rel="noopener">Source ↗</a></div>
       </article>
     </div>
 
-    <div class="sub rv"><h3 data-i18n="tl4">Tools</h3><span>4</span></div>
+    <div class="sub rv"><h3>Tools</h3><span>3</span></div>
     <div class="sws">
       <a class="sw rv" href="https://github.com/dongzhaohe321418-lab/scientific-figure-studio" target="_blank" rel="noopener">
         <span class="when">Sep 2026</span>
-        <div><h4>Scientific Figure Studio</h4><p data-i18n="t1">A Codex skill for evidence-grounded scientific illustration: the best correct PNG first, then a genuinely editable SVG rebuilt towards it. Science, appearance and editability are reviewed separately.</p></div>
+        <div><h4>Scientific Figure Studio</h4><p>A Codex skill for evidence-grounded scientific illustration: the best correct PNG first, then a genuinely editable SVG rebuilt towards it. Science, appearance and editability are reviewed separately.</p></div>
         <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span>★ 10</span></div>
         <span class="arrow">↗</span>
       </a>
       <a class="sw rv" href="https://labscope.vercel.app" target="_blank" rel="noopener">
         <span class="when">Jul 2026</span>
-        <div><h4>LabScope</h4><p data-i18n="t2">Search 269 gas-analyser models and see the published papers that used each one, with the sentence from their methods section, pulled live from Europe PMC and OpenAlex.</p></div>
-        <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span data-i18n="live">live demo</span></div>
+        <div><h4>LabScope</h4><p>Search 269 gas-analyser models and see the published papers that used each one, with the sentence from their methods section, pulled live from Europe PMC and OpenAlex.</p></div>
+        <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span>live demo</span></div>
         <span class="arrow">↗</span>
       </a>
       <a class="sw rv" href="https://github.com/dongzhaohe321418-lab/zemax-mcp" target="_blank" rel="noopener">
         <span class="when">Aug 2026</span>
-        <div><h4>Eye Illumination Web Lab</h4><p data-i18n="t5">A local, bilingual web lab for chick and human posterior-eye illumination: parameter sweeps, PDF reports and guided Zemax OpticStudio verification, with optional MCP automation.</p></div>
+        <div><h4>Eye Illumination Web Lab</h4><p>A local, bilingual web lab for chick and human posterior-eye illumination: parameter sweeps, PDF reports and guided Zemax OpticStudio verification, with optional MCP automation.</p></div>
         <div class="meta"><span class="lang" style="--c:#DA5B0B">Jupyter</span><span>Zemax · MCP</span></div>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="sw rv" href="https://github.com/dongzhaohe321418-lab/csi300-spmo-index" target="_blank" rel="noopener">
-        <span class="when">Sep 2026</span>
-        <div><h4>CSI300 × SPMO index</h4><p data-i18n="t6">A point-in-time backtest of an S&amp;P-style momentum index on the historical CSI 300, 2005 to 2026, with no tuned parameters: 9.83% CAGR against 7.68%, with a deeper maximum drawdown.</p></div>
-        <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span data-i18n="bt">backtest</span></div>
         <span class="arrow">↗</span>
       </a>
     </div>
@@ -588,65 +603,153 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px 
 </section>
 
 <!-- §4 -->
-<section class="s" id="timeline">
+<section class="s th4" id="markets">
   <div class="wrap">
     <div class="shead rv">
-      <span class="sno">§4</span>
-      <h2 data-i18n="h4">2026, month by month</h2>
-      <p data-i18n="h4p">Every public repository in the order it was created, coloured by thread.</p>
+      <span class="sno"><span class="tdot"></span>§4</span>
+      <h2>Markets &amp; quantitative research</h2>
+      <p>Co-founding a quant research team, and investing in private and public markets under the same rule as the science: every number needs its evidence.</p>
     </div>
-    <div class="tl rv">
-      <div class="month"><h3 data-i18n="mApr">Apr<small>2</small></h3><ol>
-        <li class="ti th2"><span class="dd">13</span><span class="tdot"></span><a href="#materials">Sort-match SSL for NMR</a><span class="ty" data-i18n="tyP">paper</span></li>
-        <li class="ti th2"><span class="dd">24</span><span class="tdot"></span><a href="#materials">Sort-match SSL for XRD</a><span class="ty" data-i18n="tyP">paper</span></li>
-      </ol></div>
-      <div class="month"><h3 data-i18n="mMay">May<small>1</small></h3><ol>
-        <li class="ti th3"><span class="dd">12</span><span class="tdot"></span><a href="#teaching" data-i18n="b2h">Materials Simulation Handbook</a><span class="ty" data-i18n="tyH">handbook</span></li>
-      </ol></div>
-      <div class="month"><h3 data-i18n="mJul">Jul<small>4</small></h3><ol>
-        <li class="ti th3"><span class="dd">15</span><span class="tdot"></span><a href="#teaching">LabScope</a><span class="ty" data-i18n="tyT">tool</span></li>
-        <li class="ti th2"><span class="dd">21</span><span class="tdot"></span><a href="#materials">matsci-env</a><span class="ty" data-i18n="tyS">software</span></li>
-        <li class="ti th2"><span class="dd">22</span><span class="tdot"></span><a href="#materials" data-i18n="w2h">Perovskite screening</a><span class="ty" data-i18n="tySt">study</span></li>
-        <li class="ti th1"><span class="dd">30</span><span class="tdot"></span><a href="#audit" data-i18n="e1">CrossAudit, first version</a><span class="ty" data-i18n="tyS">software</span></li>
-      </ol></div>
-      <div class="month"><h3 data-i18n="mAug">Aug<small>4</small></h3><ol>
-        <li class="ti th1"><span class="dd">01</span><span class="tdot"></span><a href="#audit" data-i18n="e2">CrossAudit v2, then v4 two days later</a><span class="ty" data-i18n="tyS">software</span></li>
-        <li class="ti th3"><span class="dd">07</span><span class="tdot"></span><a href="#teaching" data-i18n="b1h">Programming &amp; Computer Systems Handbook</a><span class="ty" data-i18n="tyH">handbook</span></li>
-        <li class="ti th3"><span class="dd">14</span><span class="tdot"></span><a href="#teaching">Eye Illumination Web Lab</a><span class="ty" data-i18n="tyT">tool</span></li>
-        <li class="ti th1"><span class="dd">15</span><span class="tdot"></span><a href="#audit">crossaudit-app</a><span class="ty" data-i18n="tyS">software</span></li>
-      </ol></div>
-      <div class="month"><h3 data-i18n="mSep">Sep<small>6</small></h3><ol>
-        <li class="ti th1"><span class="dd">01</span><span class="tdot"></span><a href="#audit">CrossAudit Evidence Lab</a><span class="ty" data-i18n="tyS">software</span></li>
-        <li class="ti th1"><span class="dd">04</span><span class="tdot"></span><a href="#audit" data-i18n="e3">CrossAudit harness 4.17.0 released</a><span class="ty" data-i18n="tyR">release</span></li>
-        <li class="ti th3"><span class="dd">07</span><span class="tdot"></span><a href="#teaching">Scientific Figure Studio</a><span class="ty" data-i18n="tyT">tool</span></li>
-        <li class="ti th3"><span class="dd">10</span><span class="tdot"></span><a href="#teaching">CSI300 × SPMO index</a><span class="ty" data-i18n="tyT">tool</span></li>
-        <li class="ti th2"><span class="dd">23</span><span class="tdot"></span><a href="#materials">Is there a Hamiltonian inside a decision model?</a><span class="ty" data-i18n="tyP">paper</span></li>
-        <li class="ti th1"><span class="dd">24</span><span class="tdot"></span><a href="#audit" data-i18n="e4">What Moves the Ceiling on Automated Audit, on arXiv</a><span class="ty" data-i18n="tyP">paper</span></li>
-      </ol></div>
-      <div class="month"><h3 data-i18n="mNov">Nov<small>1</small></h3><ol>
-        <li class="ti th1"><span class="dd">04</span><span class="tdot"></span><a href="#audit">Content or Context?</a><span class="ty" data-i18n="tyP">paper</span></li>
-      </ol></div>
+
+    <div class="sub rv"><h3>Tubby Labs</h3><span>co-founder · Sep 2026 →</span></div>
+    <div class="org">
+      <div class="rv">
+        <p class="ca-lede">Tubby Labs is a quantitative research team building its own stack for daily equity alpha research. I co-founded it and build the research console with the team.</p>
+        <p>The console runs locally on Microsoft Qlib. It screens ideas, searches for new signals with machine learning, validates them in long/short simulation, and ties every result to its evidence. It places no trades and connects to no broker.</p>
+        <div class="chips"><span class="chip">Tubby Quant v0.2.0</span><span class="chip">Qlib 0.9.7</span><span class="chip">Apache-2.0 core</span><span class="chip">67-page manual</span></div>
+        <div class="links" style="margin-top:22px">
+          <a href="https://github.com/tubby-labs-research/tubby-quant" target="_blank" rel="noopener">Tubby Quant, open source ↗</a>
+          <a href="https://github.com/tubby-labs-research" target="_blank" rel="noopener">Tubby Labs on GitHub ↗</a>
+        </div>
+      </div>
+      <figure class="shot rv">
+        <img src="img/tubby-console.jpg" width="1280" height="696" loading="lazy" alt="The Tubby Quant Alpha Lab console: expression editor, saved alpha library and simulation controls, shown on synthetic toy data.">
+        <figcaption>The Tubby Quant console. Real interface, synthetic toy data; not investment performance.</figcaption>
+      </figure>
     </div>
-    <div class="legend rv">
-      <span class="th1"><span class="tdot"></span><span data-i18n="lg1">§1 Auditing &amp; measuring LMs</span></span>
-      <span class="th2"><span class="tdot"></span><span data-i18n="lg2">§2 Chemistry &amp; materials ML</span></span>
-      <span class="th3"><span class="tdot"></span><span data-i18n="lg3">§3 Tools &amp; teaching</span></span>
+    <div class="flow rv" aria-label="Tubby Quant workflow">
+      <div class="step"><span class="k">01</span><h5>Alpha Lab</h5><p>Fast expression screening, batches and a saved alpha library.</p></div>
+      <div class="step"><span class="k">02</span><h5>Discover</h5><p>Autonomous alpha discovery and machine-learning factor analysis.</p></div>
+      <div class="step"><span class="k">03</span><h5>Qlib Validation</h5><p>Long/short simulation with full accounting and saved reports.</p></div>
+      <div class="step"><span class="k">04</span><h5>Research</h5><p>Source-backed price and volume campaigns, optionally agent-driven.</p></div>
+      <div class="step seal"><span class="k">05</span><h5>Evidence</h5><p>Every result tied to its inputs, settings and checks.</p></div>
     </div>
+
+    <div class="sub rv"><h3>Private markets</h3><span>primary · pre-IPO</span></div>
+    <div class="sws">
+      <div class="sw priv rv">
+        <span class="when">Pre-IPO</span>
+        <div><h4>Anthropic</h4><p>Participated in a pre-IPO fundraising round.</p></div>
+        <div class="meta"><span>AI lab</span><span>fundraising round</span></div>
+        <span class="tag"></span>
+      </div>
+      <div class="sw priv rv">
+        <span class="when">Pre-IPO</span>
+        <div><h4>OpenAI</h4><p>Participated in a pre-IPO fundraising round.</p></div>
+        <div class="meta"><span>AI lab</span><span>fundraising round</span></div>
+        <span class="tag"></span>
+      </div>
+    </div>
+
+    <div class="sub rv"><h3>Public markets</h3><span>secondary · approach, not returns</span></div>
+    <div class="sws">
+      <div class="sw priv rv">
+        <span class="when">Oct 2026</span>
+        <div><h4>Options on Interactive Brokers</h4><p>An evidence-first options research and execution system, paper trading first. The question it answers before any live order: does a durable edge survive costs?</p></div>
+        <div class="meta"><span>IBKR · options</span><span>paper first</span></div>
+        <span class="tag">private</span>
+      </div>
+      <div class="sw priv rv">
+        <span class="when">Oct 2026</span>
+        <div><h4>AI × biomedicine portfolio</h4><p>Sector research across the AI-biomedicine supply chain, turned into Trading 212 Pie allocations, with read-only account tools that never place orders.</p></div>
+        <div class="meta"><span>Trading 212</span><span>thematic</span></div>
+        <span class="tag">private</span>
+      </div>
+      <div class="sw priv rv">
+        <span class="when">Aug 2026</span>
+        <div><h4>Multi-factor pipeline, A-shares to US</h4><p>Ported a research-to-paper-trading pipeline from A-shares to US equities in 17 pull requests: point-in-time universes, market-specific costs, 12-1 momentum and an 8-K event taxonomy, under 313 tests.</p></div>
+        <div class="meta"><span>A-share · US</span><span>paper trading</span></div>
+        <span class="tag">private</span>
+      </div>
+      <a class="sw rv" href="https://github.com/dongzhaohe321418-lab/csi300-spmo-index" target="_blank" rel="noopener">
+        <span class="when">Sep 2026</span>
+        <div><h4>CSI300 × SPMO index</h4><p>A point-in-time backtest of an S&amp;P-style momentum index on the historical CSI 300, 2005 to 2026, with no tuned parameters: 9.83% CAGR against 7.68%, with a deeper maximum drawdown.</p></div>
+        <div class="meta"><span class="lang" style="--c:#3572A5">Python</span><span>backtest</span></div>
+        <span class="arrow">↗</span>
+      </a>
+    </div>
+    <p class="disc rv">Amounts, positions and returns stay private. Nothing on this page is investment advice.</p>
   </div>
 </section>
 
 <!-- §5 -->
-<section class="s" id="about">
+<section class="s" id="timeline">
   <div class="wrap">
     <div class="shead rv">
       <span class="sno">§5</span>
-      <h2 data-i18n="h5">About</h2>
+      <h2>2026, month by month</h2>
+      <p>Projects in the order each repository was created, coloured by thread.</p>
+    </div>
+    <div class="tl rv">
+      <div class="month"><h3>Apr<small>2</small></h3><ol>
+        <li class="ti th2"><span class="dd">13</span><span class="tdot"></span><a href="#materials">Sort-match SSL for NMR</a><span class="ty">paper</span></li>
+        <li class="ti th2"><span class="dd">24</span><span class="tdot"></span><a href="#materials">Sort-match SSL for XRD</a><span class="ty">paper</span></li>
+      </ol></div>
+      <div class="month"><h3>May<small>1</small></h3><ol>
+        <li class="ti th3"><span class="dd">12</span><span class="tdot"></span><a href="#teaching">Materials Simulation Handbook</a><span class="ty">handbook</span></li>
+      </ol></div>
+      <div class="month"><h3>Jul<small>4</small></h3><ol>
+        <li class="ti th3"><span class="dd">15</span><span class="tdot"></span><a href="#teaching">LabScope</a><span class="ty">tool</span></li>
+        <li class="ti th2"><span class="dd">21</span><span class="tdot"></span><a href="#materials">matsci-env</a><span class="ty">software</span></li>
+        <li class="ti th2"><span class="dd">22</span><span class="tdot"></span><a href="#materials">Perovskite screening</a><span class="ty">study</span></li>
+        <li class="ti th1"><span class="dd">30</span><span class="tdot"></span><a href="#audit">CrossAudit, first version</a><span class="ty">software</span></li>
+      </ol></div>
+      <div class="month"><h3>Aug<small>5</small></h3><ol>
+        <li class="ti th1"><span class="dd">01</span><span class="tdot"></span><a href="#audit">CrossAudit v2, then v4 two days later</a><span class="ty">software</span></li>
+        <li class="ti th3"><span class="dd">07</span><span class="tdot"></span><a href="#teaching">Programming &amp; Computer Systems Handbook</a><span class="ty">handbook</span></li>
+        <li class="ti th3"><span class="dd">14</span><span class="tdot"></span><a href="#teaching">Eye Illumination Web Lab</a><span class="ty">tool</span></li>
+        <li class="ti th1"><span class="dd">15</span><span class="tdot"></span><a href="#audit">crossaudit-app</a><span class="ty">software</span></li>
+        <li class="ti th4"><span class="dd">21</span><span class="tdot"></span><a href="#markets">Multi-factor pipeline, A-shares to US</a><span class="ty">study</span></li>
+      </ol></div>
+      <div class="month"><h3>Sep<small>7</small></h3><ol>
+        <li class="ti th1"><span class="dd">01</span><span class="tdot"></span><a href="#audit">CrossAudit Evidence Lab</a><span class="ty">software</span></li>
+        <li class="ti th1"><span class="dd">04</span><span class="tdot"></span><a href="#audit">CrossAudit harness 4.17.0 released</a><span class="ty">release</span></li>
+        <li class="ti th3"><span class="dd">07</span><span class="tdot"></span><a href="#teaching">Scientific Figure Studio</a><span class="ty">tool</span></li>
+        <li class="ti th4"><span class="dd">10</span><span class="tdot"></span><a href="#markets">CSI300 × SPMO index</a><span class="ty">backtest</span></li>
+        <li class="ti th4"><span class="dd">15</span><span class="tdot"></span><a href="#markets">Tubby Labs, co-founded</a><span class="ty">team</span></li>
+        <li class="ti th2"><span class="dd">23</span><span class="tdot"></span><a href="#materials">Is there a Hamiltonian inside a decision model?</a><span class="ty">paper</span></li>
+        <li class="ti th1"><span class="dd">24</span><span class="tdot"></span><a href="#audit">What Moves the Ceiling on Automated Audit, on arXiv</a><span class="ty">paper</span></li>
+      </ol></div>
+      <div class="month"><h3>Oct<small>3</small></h3><ol>
+        <li class="ti th4"><span class="dd">02</span><span class="tdot"></span><a href="#markets">Options research system on Interactive Brokers</a><span class="ty">software</span></li>
+        <li class="ti th4"><span class="dd">02</span><span class="tdot"></span><a href="#markets">AI × biomedicine portfolio research</a><span class="ty">study</span></li>
+        <li class="ti th4"><span class="dd">16</span><span class="tdot"></span><a href="#markets">Tubby Quant, open-source release</a><span class="ty">release</span></li>
+      </ol></div>
+      <div class="month"><h3>Nov<small>1</small></h3><ol>
+        <li class="ti th1"><span class="dd">04</span><span class="tdot"></span><a href="#audit">Content or Context?</a><span class="ty">paper</span></li>
+      </ol></div>
+    </div>
+    <div class="legend rv">
+      <span class="th1"><span class="tdot"></span><span>§1 Auditing &amp; measuring LMs</span></span>
+      <span class="th2"><span class="tdot"></span><span>§2 Chemistry &amp; materials ML</span></span>
+      <span class="th3"><span class="tdot"></span><span>§3 Tools &amp; teaching</span></span>
+      <span class="th4"><span class="tdot"></span><span>§4 Markets &amp; quant</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- §6 -->
+<section class="s" id="about">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="sno">§6</span>
+      <h2>About</h2>
     </div>
     <div class="about">
       <div class="rv">
-        <p class="bio" data-i18n="bio">I'm an undergraduate in Cambridge, working where machine learning meets the physical sciences. Most of my projects end up asking the same question: how do you know this number is right? So everything here is public, with its code, records and the reviews it went through.</p>
-        <p class="big"><a href="https://github.com/dongzhaohe321418-lab" target="_blank" rel="noopener" data-i18n="ct">Say hello on GitHub.</a></p>
-        <p class="cap" style="margin-top:16px" data-i18n="ctp">Open an issue on any repository, or reach out about materials ML, auditing AI-generated research, or the handbooks.</p>
+        <p class="bio">I'm an undergraduate in Cambridge, working where machine learning meets the physical sciences. Most of my projects end up asking the same question: how do you know this number is right? So everything here is public, with its code, records and the reviews it went through.</p>
+        <p class="big"><a href="https://github.com/dongzhaohe321418-lab" target="_blank" rel="noopener">Say hello on GitHub.</a></p>
+        <p class="cap" style="margin-top:16px">Open an issue on any repository, or reach out about materials ML, auditing AI-generated research, or the handbooks.</p>
       </div>
 <pre class="term rv" aria-label="Motto"><span class="pr">$</span> whoami
 Zhaohe (Eric) Dong · Cambridge
@@ -657,14 +760,14 @@ in science and in software
 <span class="ok">AUDIT: PASS</span>  <span class="mu">receipt sealed in git</span></pre>
     </div>
 
-    <div class="sub rv" style="margin-top:clamp(48px,6vw,72px)"><h3 data-i18n="h5r">House rules</h3><span data-i18n="h5rs">lifted from my own READMEs</span></div>
+    <div class="sub rv" style="margin-top:clamp(48px,6vw,72px)"><h3>House rules</h3><span>lifted from my own READMEs</span></div>
     <div class="rules" style="margin-top:0">
-      <div class="rule rv"><p data-i18n="r1">Barriers computed at different theory fingerprints are never compared.</p><span class="label">perovskite-screening</span></div>
-      <div class="rule rv"><p data-i18n="r2">MACE-level numbers are never presented as DFT or experiment.</p><span class="label">perovskite-screening</span></div>
-      <div class="rule rv"><p data-i18n="r3">Every correction leaves the superseded record in place, marked, never overwritten.</p><span class="label">perovskite-screening</span></div>
-      <div class="rule rv"><p data-i18n="r4">A failed check blocks whatever the model says.</p><span class="label">crossaudit-harness</span></div>
-      <div class="rule rv"><p data-i18n="r5">Figure outputs are generated, never hand-edited.</p><span class="label">audit-ceiling-paper</span></div>
-      <div class="rule rv"><p data-i18n="r6">Scientific errors cannot be compensated for by attractive styling.</p><span class="label">scientific-figure-studio</span></div>
+      <div class="rule rv"><p>Barriers computed at different theory fingerprints are never compared.</p><span class="label">perovskite-screening</span></div>
+      <div class="rule rv"><p>MACE-level numbers are never presented as DFT or experiment.</p><span class="label">perovskite-screening</span></div>
+      <div class="rule rv"><p>Every correction leaves the superseded record in place, marked, never overwritten.</p><span class="label">perovskite-screening</span></div>
+      <div class="rule rv"><p>A failed check blocks whatever the model says.</p><span class="label">crossaudit-harness</span></div>
+      <div class="rule rv"><p>Figure outputs are generated, never hand-edited.</p><span class="label">audit-ceiling-paper</span></div>
+      <div class="rule rv"><p>Scientific errors cannot be compensated for by attractive styling.</p><span class="label">scientific-figure-studio</span></div>
     </div>
   </div>
 </section>
@@ -673,7 +776,7 @@ in science and in software
 <footer>
   <div class="wrap mono" style="color:var(--muted)">
     <span>© 2026 Zhaohe (Eric) Dong</span>
-    <span data-i18n="foot">Built from github.com/dongzhaohe321418-lab · read 8 Nov 2026</span>
+    <span>Built from github.com/dongzhaohe321418-lab · read 8 Nov 2026</span>
   </div>
 </footer>
 
@@ -681,87 +784,6 @@ in science and in software
 (function(){
   var root=document.documentElement; root.classList.add('js');
   function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
-
-  /* ---------- language ---------- */
-  var ZH={
-    n1:"审计",n2:"材料 ML",n3:"工具与教学",n4:"时间线",n5:"关于",
-    eyebrow:"剑桥 · 机器学习 × 化学与材料 × 可审计的 AI",
-    alt:"大多数人叫我 Eric",
-    lede:"我是一名本科生，做面向化学与材料的机器学习，也做一套审计系统，让 <mark>AI 写出的科研可以被逐个数字地核查。</mark>",
-    f0:"篇论文与预印本",f1:"过去一年的贡献",f2:"个仓库",cta2:"浏览作品 ↓",
-    instL:"图 0 · 排序匹配，实时运行",stepL:"步数",crossL:"5,040 种中最优",
-    cap:"<b>图 0</b>上方的实测峰没有原子归属。把预测值与实测峰按排序后一一配对，对任意凸代价都是最优指派，所以模型只用两次 <code class=\"mono\">torch.sort</code> 就能从无归属的峰列表中学习。拖动下方任一预测峰：配对实时重排，连线永不交叉，对全部 5,040 种配对的暴力搜索也给出同一个最优值。",
-    m1h:"审计与测量语言模型",m1p:"一套由另一家厂商审查 AI 生成成果的框架，以及测量它到底能抓住什么的研究。",
-    m2h:"化学与材料的机器学习",m2p:"从无归属的谱峰和衍射峰中学习；模拟从不混淆理论层级。",
-    m3h:"开放工具与教学",m3p:"两本开放手册，以及为实验台、文献检索和实验室预算做的工具。",m3a:"2 本手册",
-    s1p:"当模型写出代码、结果或论文时，谁来检查？又怎么知道检查得够不够？我搭建审计框架，然后测量它能抓住什么。",
-    caSub:"旗舰项目 · macOS 应用 + 命令行 · MIT",
-    caLede:"一个模型负责生成，另一家厂商的模型审查已提交的结果。确定性检查先跑，每个任务、发现、裁决和收据都记录在 Git 里。同厂商配对由框架直接拒绝，而不是靠提示词约束。",
-    caQ:"隔离换来的是<em>严格</em>，而不是视力。",caQs:"摘自 CrossAudit README，基于实测",
-    lHarness:"框架 ↗",lRel:"最新发布 ↗",
-    chT:"自审 vs. 陌生人审",chS:"30 个实例 · 占增量的比例",cm1:"被拦截",cm2:"指出缺陷",self:"同一模型",other:"另一厂商",
-    chN:"自审的模型其实看到了更多缺陷，却把 64 条发现中的 61 条记为“建议”。单一任务、单一厂商组合；更正记录与基准一同公开。",
-    st1:"生成",st1p:"厂商 A 写出交付物并提交。",st2:"检查",st2p:"路径、结构、单位、收敛与溯源检查，先于任何模型意见运行。",
-    st3:"审计",st3p:"厂商 B 只读已提交的文件，返回分级的发现。",st4:"裁决",vp:"通过",vc:"需修改",vy:"需要你",
-    st5:"收据",st5p:"绑定裁决、规则、提交与证据，封存在 Git 中。",
-    lin:"演进",linS:"五周内五个版本",l1:"第一个“生成-审计”循环",l2:"两个对抗智能体，一本可回放的账本",l3:"Git 中可验证的收据",l4:"本地优先的 macOS 应用与网站",l5:"当前版本：确定性检查先于任何模型意见",
-    pap:"论文",sof:"软件",sof2:"研究与软件",
-    pre:"预印本",prep:"撰写中",
-    p1:"把 CrossAudit 的审计配置与真实标准对照测量。检出率属于一个配置，而不属于审计模型本身：路由、规则里的一句话、计数规则都会改变它。三项预注册研究把它推广到科学代码、结果与数据。",
-    p1n:"通过可见测试、但实际有缺陷的程序中，被八次独立审读至少一次标出的比例",
-    p2:"发送模型把隐藏状态经过一个学习到的“桥”传给只读后缀的接收模型。用供体消息把收益拆成通用、文章级和窗口级三部分。",
-    p2n:"只用 LLM 写的文本拟合的桥，恢复的内容收益比例（Pythia 70M → 160M）",
-    p3:"把决策模型的校准概率读作局部能量 E = −log p，并用 PySCF 真值检验它在量子化学决策上的表现。这个能量地形近似一致、但可测地不自洽；大部分信号来自题目中给出的键伸缩因子。",
-    p3n:"次不重复的 API 调用，全部缓存、可离线复现，总花费约 0.28 美元",
-    p4:"在任意凸的逐原子代价下，预测化学位移与无归属峰之间的最优匹配严格等价于排序，因此模型能直接用文献峰列表训练，无需原子标注。并以切片 Wasserstein 损失推广到二维 HSQC。上面的图 0 演示的就是这个结果。",
-    p4n:"10% 标注下的测试 MAE，监督基线为 4.09 ppm。模型和数据完全相同。",
-    p5:"同一定理迁移到衍射：从 5,000 个 Materials Project 结构预测峰位。在这个规模下峰强度学不出来，文中如实写明。",
-    p5n:"仅用 10% 标注的 2θ MAE，与全监督（4.13° ± 0.23）持平",
-    lRepo:"记录与评审 ↗",lCode:"代码与论文 ↗",lCodeOnly:"代码 ↗",
-    w1:"工具优先的审计引擎：模型提出发现，只有经注册验证器复现才能硬性拦截。用来检验“换一家厂商”是否足以构成独立审查。",w1m:"研究预览 · 零依赖",
-    s2p:"从化学家手里真实存在的数据中学习：没有归属的谱峰、衍射峰，以及理论层级从不混淆的模拟。",
-    w2h:"钙钛矿筛选",w2:"γ-CsPbI<sub>3</sub> 与 FA 钙钛矿中的碘空位迁移。用 MACE 在 36 个宿主、108 条路径上筛选 GA⁺ 和 Sr²⁺ 添加剂：两者在实际意义上都等同于没有效果。电荷态势垒由 DFT 把关。",
-    w3:"一套锁定版本、经过测试的计算材料环境：DFT、MACE 等机器学习势、分子动力学、工作流与可视化。三条命令即可用。",
-    s3p:"为觉得某个领域很难、又找不到入口的学生写手册；为实验台、文献检索和采购表单做工具。",
-    hb:"手册",tl4:"工具",
-    b1l:"43 章 · 10 个项目 · 浏览器内运行",b1h:"编程与计算机系统手册",
-    b1:"从比特与二进制，到数据结构与算法，再到一条从零手写的 AI 工程线。每段 Python 都能通过 Pyodide 在浏览器里运行，并在每次推送时由 CI 执行。",
-    b1a:"机器是什么",b1b:"程序设计 I 与 II",b1c:"系统与工程实践",b1d:"AI 工程：分词器、注意力、KV 缓存、MCP、RAG、DPO、GRPO",b1e:"程序设计 III",
-    read:"在线阅读 ↗",src:"源码 ↗",
-    b2l:"三层结构 · 五个综合项目 · ★ 4",b2h:"材料模拟手册",
-    b2:"一本自成体系的计算材料科学教材，带读者从 A-level 数学物理一路走到运行 MACE-MP-0 这样的基础模型工作流。",
-    b2a:"先修：数学、Python、晶体、固体物理",b2b:"核心：Quantum ESPRESSO 中的 DFT、LAMMPS 分子动力学、统计力学、从描述符到 MACE 的机器学习势、晶体图神经网络",b2c:"研究：主动学习、原子基础模型、多尺度耦合、设计你自己的课题",b2d:"综合项目：缺陷形成能、MLIP 熔点、带隙筛选、从零实现 MLIP、贝叶斯催化剂搜索",
-    t1:"一个 Codex 技能，用于有证据支撑的科研插图：先得到科学正确的最佳 PNG，再朝它重建真正可编辑的 SVG。科学性、外观与可编辑性分开审查。",
-    t2:"检索 269 款气体分析仪型号，实时从 Europe PMC 与 OpenAlex 找出真正用过它的论文，并给出方法节里的原句。",live:"在线体验",
-    t5:"面向小鸡与人眼后极照明研究的本地双语 Web 实验室：参数扫描、PDF 报告、引导式 Zemax OpticStudio 验证，以及可选的 MCP 自动化。",
-    t6:"在历史 CSI 300 成分股上对标普式动量指数做时点回测，2005–2026，不调任何参数：年化 9.83%，对比 7.68%，最大回撤也更深。",bt:"回测",
-    h4:"2026，逐月",h4p:"所有公开仓库，按创建时间排列，颜色对应研究方向。",
-    mApr:"4 月<small>2 项</small>",mMay:"5 月<small>1 项</small>",mJul:"7 月<small>4 项</small>",mAug:"8 月<small>4 项</small>",mSep:"9 月<small>6 项</small>",mNov:"11 月<small>1 项</small>",
-    tyP:"论文",tyH:"手册",tyT:"工具",tyS:"软件",tySt:"研究",tyR:"发布",
-    e1:"CrossAudit 第一版",e2:"CrossAudit v2，两天后 v4",e3:"CrossAudit 框架 4.17.0 发布",e4:"《What Moves the Ceiling on Automated Audit》提交 arXiv",
-    lg1:"§1 审计与测量语言模型",lg2:"§2 化学与材料 ML",lg3:"§3 工具与教学",
-    h5:"关于",
-    bio:"我是剑桥的一名本科生，工作在机器学习与物理科学的交界处。我的大多数项目最终都会问同一个问题：你怎么知道这个数字是对的？所以这里的一切都是公开的，附带代码、记录和它经过的评审。",
-    ct:"来 GitHub 打个招呼。",ctp:"可以在任何仓库开 issue，也欢迎聊材料机器学习、AI 科研成果审计，或这两本手册。",
-    h5r:"工作守则",h5rs:"摘自我自己仓库的 README",
-    r1:"不同理论指纹下算出的势垒，永远不放在一起比较。",r2:"MACE 级别的数字，永远不当作 DFT 或实验结果呈现。",
-    r3:"每次更正都保留被取代的记录，加以标注，绝不覆盖。",r4:"检查一旦失败，无论模型怎么说都会被拦下。",
-    r5:"图像输出由脚本生成，从不手工修改。",r6:"科学错误无法用好看的样式弥补。",
-    foot:"内容取自 github.com/dongzhaohe321418-lab · 读取于 2026 年 11 月 8 日"
-  };
-  var nodes=[].slice.call(document.querySelectorAll('[data-i18n]'));
-  nodes.forEach(function(n){n._en=n.innerHTML});
-  var langBtn=document.getElementById('langBtn');
-  function setLang(l){
-    nodes.forEach(function(n){var k=n.getAttribute('data-i18n');n.innerHTML=(l==='zh'&&ZH[k])?ZH[k]:n._en});
-    root.setAttribute('lang',l==='zh'?'zh':'en');
-    langBtn.textContent=l==='zh'?'EN':'中文';
-    langBtn.setAttribute('aria-label',l==='zh'?'Switch to English':'切换到中文');
-    store('lang',l);
-  }
-  var startLang=store('lang')||((navigator.language||'').toLowerCase().indexOf('zh')===0?'zh':'en');
-  setLang(startLang);
-  langBtn.addEventListener('click',function(){setLang(root.getAttribute('lang')==='zh'?'en':'zh')});
 
   /* ---------- theme ---------- */
   var themeBtn=document.getElementById('themeBtn');
@@ -852,10 +874,9 @@ in science and in software
     });
     // labels
     ctx.font='500 10.5px "JetBrains Mono", ui-monospace, monospace';ctx.fillStyle=col['--muted'];
-    var zh=root.getAttribute('lang')==='zh';
     ctx.textAlign='left';
-    ctx.fillText(zh?'实测 · 无归属':'OBSERVED · UNASSIGNED',padL,24);
-    ctx.fillText(zh?'模型预测':'PREDICTED',padL,axisY-8);
+    ctx.fillText('OBSERVED · UNASSIGNED',padL,24);
+    ctx.fillText('PREDICTED',padL,axisY-8);
     // axis (NMR convention: high ppm on the left)
     ctx.strokeStyle=col['--muted'];ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(padL,axisY+.5);ctx.lineTo(W-padR,axisY+.5);ctx.stroke();
@@ -889,7 +910,7 @@ in science and in software
   if('ResizeObserver' in window){new ResizeObserver(function(){size();draw()}).observe(cv)}else window.addEventListener('resize',function(){size();draw()});
   function recolor(){readCols();draw()}
   if(mq.addEventListener)mq.addEventListener('change',recolor);
-  new MutationObserver(function(){setTimeout(recolor,30)}).observe(root,{attributes:true,attributeFilter:['data-theme','lang']});
+  new MutationObserver(function(){setTimeout(recolor,30)}).observe(root,{attributes:true,attributeFilter:['data-theme']});
   // drag a predicted peak
   function local(e){var r=cv.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
   cv.addEventListener('pointerdown',function(e){
